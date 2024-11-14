@@ -32,9 +32,9 @@ Een algemene microservice waarbij alle configuratie (application.properties) wor
 
 | **User Story**                           | **Communicatietype**        | **Opmerking**                                    |
 |------------------------------------------|-----------------------------|--------------------------------------------------|
-| **US1**: Nieuwe posts aanmaken           | Synchroon (OpenFeign)       | Binnen de PostService zelf                       |
-| **US2**: Opslaan als concept             | Synchroon (OpenFeign)       | Binnen de PostService zelf                       |
-| **US3**: Posts bewerken                  | Synchroon (OpenFeign)       | Binnen de PostService zelf                       |
+| **US1**: Nieuwe posts aanmaken           | Synchroon (OpenFeign)       | Communicatie binnen de PostService               |
+| **US2**: Opslaan als concept             | Synchroon (OpenFeign)       | Communicatie binnen de PostService               |
+| **US3**: Posts bewerken                  | Synchroon (OpenFeign)       | Communicatie binnen de PostService               |
 | **US4**: Overzicht gepubliceerde posts   | Synchroon (OpenFeign)       | Communicatie met PostService                     |
 | **US5**: Filteren van posts              | Synchroon (OpenFeign)       | Communicatie met PostService                     |
 | **US7**: Posts goedkeuren/afwijzen       | Synchroon (OpenFeign)       | Communicatie tussen PostService en ReviewService |
