@@ -48,4 +48,20 @@ public class PostService implements IPostService {
                 .map(this::mapToPostResponse)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public PostResponse updatePost(Long id, PostRequest postRequest) {
+        Post existingPost = postRepository.findById(id).orElse(null);
+        if (existingPost != null) {
+            existingPost.setTitle(postRequest.getTitle());
+            existingPost.setContent(postRequest.getContent());
+            existingPost.setAuthor(postRequest.getAuthor());
+            existingPost.setCreatedAt(postRequest.getCreatedAt());
+
+            postRepository.save(existingPost);
+
+            return mapToPostResponse(existingPost);
+        }
+        return null;
+    }
 }

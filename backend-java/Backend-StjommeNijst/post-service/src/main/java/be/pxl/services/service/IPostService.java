@@ -9,4 +9,5 @@ import java.util.List;
 public interface IPostService {
     PostResponse createPost(PostRequest postRequest);
     List<PostResponse> getAllPosts();
+    PostResponse updatePost(Long id, PostRequest postRequest);
 }
