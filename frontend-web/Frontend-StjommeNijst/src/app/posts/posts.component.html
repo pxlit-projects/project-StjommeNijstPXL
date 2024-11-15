@@ -1,0 +1,30 @@
+<div class="posts-container">
+    <h2>All Posts</h2>
+  
+    <!-- Create Post knop of boodschap voor niet-redacteurs -->
+    <div class="create-post-section">
+      @if(isRedacteur == true){
+      <button routerLink="/create-post" class="create-post-button">Create Post</button>
+      }
+      @else{
+      <p class="non-redacteur-message">Enkel redacteurs kunnen posts toevoegen</p>
+      }
+    </div>
+  
+    <!-- Controleer of er posts beschikbaar zijn -->
+    @if (posts.length === 0){
+    <h3 class="no-posts-message">Er zijn geen posts beschikbaar</h3>
+    }
+    @else{
+    <div class="posts-list">
+      @for(post of posts; track post.id){
+      <div class="post-item">
+        <h3>{{ post.title }}</h3>
+        <p>{{ post.content }}</p>
+        <small class="post-author">Geschreven door: {{ post.author }}</small>
+      </div>
+      }
+    </div>
+    }
+  </div>
+  
