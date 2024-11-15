@@ -21,6 +21,7 @@ public class PostService implements IPostService {
                 .author(postRequest.getAuthor())
                 .content(postRequest.getContent())
                 .title(postRequest.getTitle())
+                .createdAt(postRequest.getCreatedAt())
                 .build();
     }
 
@@ -30,6 +31,7 @@ public class PostService implements IPostService {
                 .author(post.getAuthor())
                 .content(post.getContent())
                 .title(post.getTitle())
+                .createdAt(post.getCreatedAt())
                 .build();
     }
 

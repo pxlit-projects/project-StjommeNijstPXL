@@ -16,6 +16,7 @@ export class CreatePostsComponent {
   title: string = '';
   content: string = '';
   author: string = '';
+  now = new Date();
 
   constructor(private postService: PostService, private authService: AuthService, private router: Router) {}
 
@@ -25,10 +26,12 @@ export class CreatePostsComponent {
 
   createPost(): void {
     if (this.title && this.content && this.author) {
+      const formattedDate = `${this.now.getFullYear()}-${this.now.getMonth() + 1}-${this.now.getDate()} ${this.now.getHours()}:${this.now.getMinutes()}:${this.now.getSeconds()}`;
       const newPost = {
         title: this.title,
         content: this.content,
-        author: this.author
+        author: this.author,
+        createdAt: formattedDate,
       };
 
       this.postService.createPost(newPost).subscribe({
