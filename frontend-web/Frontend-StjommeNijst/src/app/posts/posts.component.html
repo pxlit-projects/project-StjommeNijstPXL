@@ -6,9 +6,6 @@
       @if(isRedacteur == true){
       <button routerLink="/create-post" class="create-post-button">Create Post</button>
       }
-      @else{
-      <p class="non-redacteur-message">Enkel redacteurs kunnen posts toevoegen</p>
-      }
     </div>
   
     <!-- Controleer of er posts beschikbaar zijn -->
@@ -25,9 +22,6 @@
         <small class="post-author">Gepubliceerd op: {{ post.createdAt }}</small><br>
         @if(isRedacteur == true){
         <button routerLink="/edit-post/{{ post.id }}" class="create-post-button">Edit</button>
-        }
-        @else{
-          <p class="non-redacteur-message">Enkel redacteurs kunnen posts aanpassen</p>
         }
       </div>
       }

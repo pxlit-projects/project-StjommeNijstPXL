@@ -7,6 +7,8 @@ import be.pxl.services.repository.IPostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,12 +18,22 @@ public class PostService implements IPostService {
 
     private final IPostRepository postRepository;
 
+    public LocalDateTime fromStringToLocalDateTime(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return LocalDateTime.parse(date, formatter);
+    }
+
+    public String fromLocalDateTimeToString(LocalDateTime date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return date.format(formatter);
+    }
+
     public Post mapToPost(PostRequest postRequest) {
         return Post.builder()
                 .author(postRequest.getAuthor())
                 .content(postRequest.getContent())
                 .title(postRequest.getTitle())
-                .createdAt(postRequest.getCreatedAt())
+                .createdAt(fromStringToLocalDateTime(postRequest.getCreatedAt()))
                 .build();
     }
 
@@ -31,7 +43,7 @@ public class PostService implements IPostService {
                 .author(post.getAuthor())
                 .content(post.getContent())
                 .title(post.getTitle())
-                .createdAt(post.getCreatedAt())
+                .createdAt(fromLocalDateTimeToString(post.getCreatedAt()))
                 .build();
     }
 
@@ -56,7 +68,7 @@ public class PostService implements IPostService {
             existingPost.setTitle(postRequest.getTitle());
             existingPost.setContent(postRequest.getContent());
             existingPost.setAuthor(postRequest.getAuthor());
-            existingPost.setCreatedAt(postRequest.getCreatedAt());
+            existingPost.setCreatedAt(fromStringToLocalDateTime(postRequest.getCreatedAt()));
 
             postRepository.save(existingPost);
 
