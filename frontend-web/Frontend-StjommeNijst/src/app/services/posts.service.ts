@@ -18,6 +18,19 @@ export class PostService {
     return this.http.get<Post[]>(this.apiUrl);
   }
 
+  getPostById(id: number) {
+    return this.http.get<Post>(`${this.apiUrl}/${id}`);
+  }
+  
+  updatePost(id: number, post: Post) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'X-User-Role': this.authservice.getUserRole(),
+    });
+  
+    return this.http.put<Post>(`${this.apiUrl}/${id}`, post, { headers });
+  }
+
   // Create a new post (optional based on your need)
   createPost(post: any) {
     const headers = new HttpHeaders({

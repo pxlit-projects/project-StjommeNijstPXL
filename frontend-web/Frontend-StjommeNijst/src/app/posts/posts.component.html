@@ -22,7 +22,13 @@
         <h3>{{ post.title }}</h3>
         <p>{{ post.content }}</p>
         <small class="post-author">Geschreven door: {{ post.author }}</small>
-        <small class="post-author">Gepubliceerd op: {{ post.createdAt }}</small>
+        <small class="post-author">Gepubliceerd op: {{ post.createdAt }}</small><br>
+        @if(isRedacteur == true){
+        <button routerLink="/edit-post/{{ post.id }}" class="create-post-button">Edit</button>
+        }
+        @else{
+          <p class="non-redacteur-message">Enkel redacteurs kunnen posts aanpassen</p>
+        }
       </div>
       }
     </div>

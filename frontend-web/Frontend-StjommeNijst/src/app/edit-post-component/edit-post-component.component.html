@@ -1,0 +1,40 @@
+<div class="edit-post-container">
+  <h2>Edit Post</h2>
+  <form (ngSubmit)="savePost()">
+    <div>
+      <label for="title">Title:</label>
+      <input
+        id="title"
+        type="text"
+        [(ngModel)]="post.title"
+        name="title"
+        placeholder="Enter post title"
+        required
+      />
+    </div>
+
+    <div>
+      <label for="content">Content:</label>
+      <textarea
+        id="content"
+        [(ngModel)]="post.content"
+        name="content"
+        placeholder="Enter post content"
+        required
+      ></textarea>
+    </div>
+
+    <div>
+      <label for="author">Author:</label>
+      <input
+        id="author"
+        type="text"
+        [(ngModel)]="post.author"
+        name="author"
+        readonly
+      />
+    </div>
+
+    <button type="submit" [disabled]="!post.title || !post.content || !post.author">Save</button>
+  </form>
+</div>

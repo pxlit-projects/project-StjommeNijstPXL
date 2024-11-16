@@ -64,4 +64,13 @@ public class PostService implements IPostService {
         }
         return null;
     }
+
+    @Override
+    public PostResponse getPostById(Long id) {
+        Post post = postRepository.findById(id).orElse(null);
+        if (post == null) {
+            return null;
+        }
+        return mapToPostResponse(post);
+    }
 }
