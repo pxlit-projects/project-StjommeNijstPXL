@@ -6,7 +6,7 @@ US3 - klaar: Als redacteur wil ik de inhoud van een post kunnen bewerken, zodat 
 
 US4 - klaar: Als gebruiker wil ik een overzicht van gepubliceerde posts kunnen zien, zodat ik op de hoogte blijf van het laatste nieuws.
 
-US5: Als gebruiker wil ik posts kunnen filteren op basis van inhoud, auteur, datum
+US5 - klaar: Als gebruiker wil ik posts kunnen filteren op basis van inhoud, auteur, datum
 
 US7: Als redacteur wil ik ingediende posts kunnen bekijken en goedkeuren of afwijzen, zodat alleen goedgekeurde content wordt gepubliceerd.
 
@@ -21,3 +21,8 @@ US11:  Als gebruiker wil ik reacties van andere collega’s kunnen lezen, zodat 
 US12: Als gebruiker wil ik mijn eigen reacties kunnen bewerken of verwijderen, zodat ik altijd mijn eigen bijdragen kan corrigeren of verwijderen
 
 US13: zorgen voor testen!!!
+
+volgende: discovery, openfeign, api gateway en config (doen tijdens lessen)
+vragen: 
+1. over US3 
+2. over keyword dat ik niet meer dan 1 object terugkrijg

@@ -5,6 +5,7 @@ import be.pxl.services.domain.Dto.PostResponse;
 import be.pxl.services.domain.Post;
 import be.pxl.services.repository.IPostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -84,5 +85,24 @@ public class PostService implements IPostService {
             return null;
         }
         return mapToPostResponse(post);
+    }
+
+    @Override
+    public List<PostResponse> getFilteredPosts(String startDate, String endDate, String author, String keyword) {
+        // Haal de gefilterde posts op via de repository
+        LocalDateTime startDateTime = null;
+        LocalDateTime endDateTime = null;
+        if (startDate != null){
+            startDateTime = fromStringToLocalDateTime(startDate);
+        }
+        if (endDate != null){
+            endDateTime = fromStringToLocalDateTime(endDate);
+        }
+        List<Post> posts = postRepository.findFilteredPosts(startDateTime, endDateTime, author, keyword);
+
+        // Zet de gefilterde posts om naar PostResponse objecten
+        return posts.stream()
+                .map(this::mapToPostResponse)
+                .collect(Collectors.toList());
     }
 }

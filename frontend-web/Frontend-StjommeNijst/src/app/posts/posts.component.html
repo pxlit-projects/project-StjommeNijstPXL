@@ -1,6 +1,6 @@
 <div class="posts-container">
     <h2>All Posts</h2>
-  
+    <app-post-filter (filterChanged)="onFilterChanged($event)"></app-post-filter> <!-- Attach filter component here -->
     <!-- Create Post knop of boodschap voor niet-redacteurs -->
     <div class="create-post-section">
       @if(isRedacteur == true){

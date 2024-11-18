@@ -57,4 +57,16 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();  // Niet toegestaan voor niet-redacteuren
         }
     }
+
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<PostResponse>> getFilteredPosts(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate,
+            @RequestParam(required = false) String author,
+            @RequestParam(required = false) String keyword) {
+
+        List<PostResponse> posts = postService.getFilteredPosts(startDate, endDate, author, keyword);
+        return ResponseEntity.ok(posts);
+    }
 }

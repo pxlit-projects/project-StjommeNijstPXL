@@ -1,0 +1,23 @@
+<div class="filter-section">
+    <h3>Filter Posts</h3>
+    <form class="filter-form">
+      <div class="filter-field">
+        <label for="startDate">Startdatum:</label>
+        <input id="startDate" type="datetime-local" [(ngModel)]="startDate" name="startDate" />
+      </div>
+      <div class="filter-field">
+        <label for="endDate">Einddatum:</label>
+        <input id="endDate" type="datetime-local" [(ngModel)]="endDate" name="endDate" />
+      </div>
+      <div class="filter-field">
+        <label for="author">Auteur:</label>
+        <input id="author" type="text" [(ngModel)]="author" name="author" placeholder="Auteur naam" />
+      </div>
+      <div class="filter-field">
+        <label for="keyword">Trefwoord:</label>
+        <input id="keyword" type="text" [(ngModel)]="keyword" name="keyword" placeholder="Zoek op trefwoord" />
+      </div>
+      <button type="button" (click)="emitFilter()" class="filter-button">Zoeken</button>
+    </form>
+  </div>
+  
