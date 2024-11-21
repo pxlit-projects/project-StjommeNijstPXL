@@ -1,0 +1,42 @@
+services:
+  postservice-db:
+    image: mysql:8.0
+    container_name: postservice-db
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: 'postservice_db'
+       MYSQL_USER: 'root'
+      MYSQL_ROOT_PASSWORD: 'toor'
+    volumes:
+      - db_data_postservice:/var/lib/mysql
+
+  reviewservice-db:
+    image: mysql:8.0
+    container_name: reviewservice-db
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_DATABASE: 'reviewservice_db'
+      MYSQL_ROOT_USER: 'root'
+      MYSQL_ROOT_PASSWORD: 'toor'
+    volumes:
+      - db_data_reviewservice:/var/lib/mysql
+
+  commentservice-db:
+    image: mysql:8.0
+    container_name: commentservice-db
+    ports:
+      - "3309:3306"
+    environment:
+      MYSQL_DATABASE: 'commentservice_db'
+      MYSQL_ROOT_USER: 'root'
+      MYSQL_ROOT_PASSWORD: 'toor'
+    volumes:
+      - db_data_commentservice:/var/lib/mysql
+
+volumes:
+  db_data_postservice:
+  db_data_reviewservice:
+  db_data_commentservice:
+  db_data_discoveryservice:
