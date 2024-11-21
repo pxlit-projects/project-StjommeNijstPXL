@@ -22,5 +22,4 @@ public class Post {
     private String author;
     private LocalDateTime createdAt;
 
-
 }

@@ -51,10 +51,10 @@ public class PostController {
             if (updatedPost != null) {
                 return ResponseEntity.ok(updatedPost);
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);  // Post niet gevonden
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }
         } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();  // Niet toegestaan voor niet-redacteuren
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 

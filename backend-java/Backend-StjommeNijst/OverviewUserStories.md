@@ -23,6 +23,3 @@ US12: Als gebruiker wil ik mijn eigen reacties kunnen bewerken of verwijderen, z
 US13: zorgen voor testen!!!
 
 volgende: discovery, openfeign, api gateway en config (doen tijdens lessen)
-vragen: 
-1. over US3 
-2. over keyword dat ik niet meer dan 1 object terugkrijg

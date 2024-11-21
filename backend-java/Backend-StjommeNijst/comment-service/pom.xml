@@ -7,10 +7,10 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>post-service</artifactId>
+    <artifactId>comment-service</artifactId>
     <packaging>jar</packaging>
 
-    <name>post-service</name>
+    <name>comment-service</name>
     <url>http://maven.apache.org</url>
 
     <properties>
