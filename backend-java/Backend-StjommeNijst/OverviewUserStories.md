@@ -22,4 +22,4 @@ US12: Als gebruiker wil ik mijn eigen reacties kunnen bewerken of verwijderen, z
 
 US13: zorgen voor testen!!!
 
-volgende: discovery, openfeign, api gateway en config (doen tijdens lessen)
+volgende: openfeign, api gateway en config (doen tijdens lessen)
