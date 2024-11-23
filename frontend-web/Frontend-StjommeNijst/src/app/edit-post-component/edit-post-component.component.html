@@ -38,3 +38,6 @@
     <button type="submit" [disabled]="!post.title || !post.content || !post.author">Save</button>
   </form>
 </div>
+<div class="saved-posts-link">
+  <button (click)="saveAsDraft()">Sla op als concept</button>
+</div>
