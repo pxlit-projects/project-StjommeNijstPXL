@@ -3,6 +3,7 @@ package be.pxl.services.service;
 import be.pxl.services.domain.Dto.PostRequest;
 import be.pxl.services.domain.Dto.PostResponse;
 import be.pxl.services.domain.Post;
+import be.pxl.services.domain.Status;
 import be.pxl.services.repository.IPostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cglib.core.Local;
@@ -35,6 +36,7 @@ public class PostService implements IPostService {
                 .content(postRequest.getContent())
                 .title(postRequest.getTitle())
                 .createdAt(fromStringToLocalDateTime(postRequest.getCreatedAt()))
+                .status(postRequest.getStatus())
                 .build();
     }
 
@@ -45,6 +47,7 @@ public class PostService implements IPostService {
                 .content(post.getContent())
                 .title(post.getTitle())
                 .createdAt(fromLocalDateTimeToString(post.getCreatedAt()))
+                .status(post.getStatus())
                 .build();
     }
 
@@ -57,6 +60,14 @@ public class PostService implements IPostService {
     @Override
     public List<PostResponse> getAllPosts() {
         List<Post> posts = postRepository.findAll();
+        return posts.stream()
+                .map(this::mapToPostResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PostResponse> getConceptPosts(){
+        List<Post> posts = postRepository.findAllByStatus(Status.CONCEPT);
         return posts.stream()
                 .map(this::mapToPostResponse)
                 .collect(Collectors.toList());

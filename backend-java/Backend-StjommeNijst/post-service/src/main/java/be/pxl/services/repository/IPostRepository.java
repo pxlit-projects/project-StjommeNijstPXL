@@ -2,6 +2,7 @@ package be.pxl.services.repository;
 
 import be.pxl.services.domain.Dto.PostResponse;
 import be.pxl.services.domain.Post;
+import be.pxl.services.domain.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,4 +23,9 @@ public interface IPostRepository extends JpaRepository<Post, Long> {
             @Param("endDate") LocalDateTime endDate,
             @Param("author") String author,
             @Param("keyword") String keyword);
+
+
+    @Query("select p from Post p where p.status = :status")
+    List<Post> findAllByStatus(@Param("status") Status status);
+
 }

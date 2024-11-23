@@ -15,4 +15,6 @@ public interface IPostService {
     PostResponse getPostById(Long id);
 
     List<PostResponse> getFilteredPosts(String startDate, String endDate, String author, String keyword);
+
+    List<PostResponse> getConceptPosts();
 }
