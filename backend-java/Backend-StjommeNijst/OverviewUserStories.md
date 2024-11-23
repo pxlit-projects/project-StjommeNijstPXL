@@ -21,5 +21,3 @@ US11:  Als gebruiker wil ik reacties van andere collega’s kunnen lezen, zodat 
 US12: Als gebruiker wil ik mijn eigen reacties kunnen bewerken of verwijderen, zodat ik altijd mijn eigen bijdragen kan corrigeren of verwijderen
 
 US13: zorgen voor testen!!!
-
-volgende: api gateway en config (doen tijdens lessen)

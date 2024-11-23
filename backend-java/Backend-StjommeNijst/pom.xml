@@ -28,6 +28,7 @@
         <module>review-service</module>
         <module>comment-service</module>
         <module>config-service</module>
+        <module>gateway-service</module>
     </modules>
     <scm>
         <connection/>
@@ -40,10 +41,6 @@
         <spring.cloud-version>2023.0.3</spring.cloud-version>
     </properties>
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
