@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { PostService } from '../services/posts.service';
 import { Post } from '../models/post.model';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-concept-posts',
   standalone: true,
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './concept-posts.component.html',
   styleUrl: './concept-posts.component.css'
 })

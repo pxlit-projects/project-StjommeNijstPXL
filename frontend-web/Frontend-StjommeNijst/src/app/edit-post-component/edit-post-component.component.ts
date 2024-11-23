@@ -50,6 +50,7 @@ export class EditPostComponent implements OnInit {
   // Normaal opslaan van post (bijvoorbeeld goedkeuren)
   savePost(): void {
     const formattedDate = `${this.now.getFullYear()}-${this.now.getMonth() + 1}-${this.now.getDate()} ${this.now.getHours()}:${this.now.getMinutes()}:${this.now.getSeconds()}`;
+    this.post.status = Status.NIET_GOEDGEKEURD;
     this.post.createdAt = formattedDate;
     this.postService.updatePost(this.postId, this.post).subscribe({
       next: () => {
