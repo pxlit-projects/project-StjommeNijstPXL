@@ -3,6 +3,7 @@ import { Post } from '../models/post.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PostService } from '../services/posts.service';
 import { FormsModule } from '@angular/forms';
+import { Status } from '../models/post-status.enum';
 
 @Component({
   selector: 'app-edit-post-component',
@@ -20,6 +21,7 @@ export class EditPostComponent implements OnInit {
     content: '',
     author: '',
     createdAt: '',
+    status: Status.NIET_GOEDGEKEURD
   };
 
   constructor(

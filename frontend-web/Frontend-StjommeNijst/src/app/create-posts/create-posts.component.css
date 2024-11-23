@@ -1,76 +1,133 @@
+/* Container voor de Create Post sectie */
 .create-post-container {
-    max-width: 500px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Titel van de pagina */
+.create-post-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-family: 'Arial', sans-serif;
+  font-size: 1.8rem;
+  color: #333;
+}
+
+/* Het formulier */
+.create-post-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Groepen voor elk formulierveld */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Label stijl */
+.form-group label {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+/* Stijl voor invoervelden en tekstgebieden */
+.form-group input,
+.form-group textarea {
+  font-size: 16px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  outline: none;
+  background-color: #fff;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Focus effect op inputvelden */
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+}
+
+/* Stijl voor tekstgebied (textarea) */
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* De Submit knop */
+.submit-btn {
+  padding: 12px 20px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover effect voor de Submit knop */
+.submit-btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+/* De Submit knop uitgeschakeld */
+.submit-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* De knop sectie voor opgeslagen concepten */
+.saved-posts-link {
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* Stijl voor de opslaanknoppen */
+.saved-posts-link button {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  border: 1px solid #007bff;
+  background-color: transparent;
+  color: #007bff;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover effect voor de opslaanknoppen */
+.saved-posts-link button:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Responsieve stijlen voor mobiele apparaten */
+@media (max-width: 768px) {
+  .create-post-container {
+      width: 90%;
+      padding: 20px;
   }
-  
-  .create-post-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-family: 'Arial', sans-serif;
-    color: #333;
-  }
-  
+
   .create-post-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+      gap: 15px;
   }
-  
-  .form-group {
-    display: flex;
-    flex-direction: column;
+
+  .submit-btn,
+  .saved-posts-link button {
+      width: 100%;
   }
-  
-  .form-group label {
-    font-size: 14px;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #555;
-  }
-  
-  .form-group input,
-  .form-group textarea {
-    font-size: 14px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    outline: none;
-  }
-  
-  .form-group input:focus,
-  .form-group textarea:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
-  }
-  
-  .form-group textarea {
-    resize: vertical;
-    min-height: 80px;
-  }
-  
-  .submit-btn {
-    padding: 10px 15px;
-    background-color: #007bff;
-    color: white;
-    font-size: 14px;
-    font-weight: bold;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .submit-btn:hover {
-    background-color: #0056b3;
-  }
-  
-  .submit-btn:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
+}

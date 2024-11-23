@@ -4,6 +4,7 @@ import { PostService } from '../services/posts.service';  // Importeer de PostSe
 import { AuthService } from '../services/auth.service';  // Importeer de AuthService om de gebruiker te controleren
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Status } from '../models/post-status.enum';
 
 @Component({
   selector: 'app-create-post',
@@ -24,6 +25,36 @@ export class CreatePostsComponent {
     this.author = this.authService.getUserName();
   }
 
+  goToSavedPosts(): void {
+    this.router.navigate(['/concept-posts']);
+  }
+
+  saveAsDraft(): void {
+    if (this.title && this.content && this.author) {
+      const formattedDate = `${this.now.getFullYear()}-${this.now.getMonth() + 1}-${this.now.getDate()} ${this.now.getHours()}:${this.now.getMinutes()}:${this.now.getSeconds()}`;
+      const newPost = {
+        title: this.title,
+        content: this.content,
+        author: this.author,
+        createdAt: formattedDate,
+        status: Status.CONCEPT // Specifiek opslaan als concept
+      };
+  
+      this.postService.createPost(newPost).subscribe({
+        next: () => {
+          alert('Post succesvol opgeslagen als concept!');
+          this.router.navigate(['/posts']);
+        },
+        error: (err) => {
+          console.error('Er is een fout opgetreden bij het opslaan als concept', err);
+        }
+      });
+    } else {
+      alert('Vul alle velden in!');
+    }
+  }
+  
+
   createPost(): void {
     if (this.title && this.content && this.author) {
       const formattedDate = `${this.now.getFullYear()}-${this.now.getMonth() + 1}-${this.now.getDate()} ${this.now.getHours()}:${this.now.getMinutes()}:${this.now.getSeconds()}`;
@@ -32,6 +63,7 @@ export class CreatePostsComponent {
         content: this.content,
         author: this.author,
         createdAt: formattedDate,
+        status: Status.NIET_GOEDGEKEURD
       };
 
       this.postService.createPost(newPost).subscribe({

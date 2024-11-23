@@ -1,0 +1,7 @@
+export enum Status {
+    GOEDGEKEURD = 'GOEDGEKEURD',
+    WACHTEND = 'WACHTEND',
+    NIET_GOEDGEKEURD = 'NIET_GOEDGEKEURD',
+    CONCEPT = 'CONCEPT'
+  }
+  

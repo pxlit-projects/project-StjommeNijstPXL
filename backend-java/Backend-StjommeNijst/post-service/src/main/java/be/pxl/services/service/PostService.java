@@ -59,8 +59,10 @@ public class PostService implements IPostService {
 
     @Override
     public List<PostResponse> getAllPosts() {
-        List<Post> posts = postRepository.findAll();
-        return posts.stream()
+        List<Post> approvedPosts = postRepository.findAll().stream()
+                .filter(post -> post.getStatus() == Status.NIET_GOEDGEKEURD) // Filter op goedgekeurde posts
+                .toList();
+        return approvedPosts.stream()
                 .map(this::mapToPostResponse)
                 .collect(Collectors.toList());
     }
@@ -81,6 +83,7 @@ public class PostService implements IPostService {
             existingPost.setContent(postRequest.getContent());
             existingPost.setAuthor(postRequest.getAuthor());
             existingPost.setCreatedAt(fromStringToLocalDateTime(postRequest.getCreatedAt()));
+            existingPost.setStatus(postRequest.getStatus());
 
             postRepository.save(existingPost);
 
@@ -109,7 +112,7 @@ public class PostService implements IPostService {
         if (endDate != null){
             endDateTime = fromStringToLocalDateTime(endDate);
         }
-        List<Post> posts = postRepository.findFilteredPosts(startDateTime, endDateTime, author, keyword);
+        List<Post> posts = postRepository.findFilteredPosts(startDateTime,Status.NIET_GOEDGEKEURD, endDateTime, author, keyword);
 
         // Zet de gefilterde posts om naar PostResponse objecten
         return posts.stream()

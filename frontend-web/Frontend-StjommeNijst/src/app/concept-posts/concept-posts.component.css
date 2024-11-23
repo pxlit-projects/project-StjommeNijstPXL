@@ -1,0 +1,62 @@
+/* Algemene stijl voor de pagina */
+.saved-posts-container {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Stijl voor het bericht wanneer er geen concepten zijn */
+  .no-concepts {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #777;
+    padding: 20px;
+  }
+  
+  /* Stijl voor elke post */
+  .post {
+    background-color: #fff;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .post h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .post p {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.6;
+  }
+  
+  .post p strong {
+    color: #333;
+  }
+  
+  /* Responsieve stijl voor kleinere schermen */
+  @media (max-width: 768px) {
+    .saved-posts-container {
+      width: 90%;
+    }
+  
+    .post {
+      padding: 15px;
+    }
+  
+    .post h3 {
+      font-size: 1.2rem;
+    }
+  
+    .post p {
+      font-size: 0.9rem;
+    }
+  }
+  

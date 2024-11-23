@@ -21,6 +21,8 @@ public class Post {
     private String content;
     private String author;
     private LocalDateTime createdAt;
+
+    @Enumerated(EnumType.STRING)
     private Status status;
 
 }

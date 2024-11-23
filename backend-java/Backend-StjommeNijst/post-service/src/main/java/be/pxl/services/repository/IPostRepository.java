@@ -15,11 +15,13 @@ import java.util.List;
 public interface IPostRepository extends JpaRepository<Post, Long> {
     @Query("SELECT p FROM Post p WHERE " +
             "(p.createdAt >= :startDate OR :startDate IS NULL) AND " +
+            "(p.status = :status) AND " +
             "(p.createdAt <= :endDate OR :endDate IS NULL) AND " +
             "(p.author = :author OR :author IS NULL) AND " +
             "(p.content LIKE %:keyword% OR :keyword IS NULL)")
     List<Post> findFilteredPosts(
             @Param("startDate") LocalDateTime startDate,
+            @Param("status") Status status,
             @Param("endDate") LocalDateTime endDate,
             @Param("author") String author,
             @Param("keyword") String keyword);
@@ -27,5 +29,4 @@ public interface IPostRepository extends JpaRepository<Post, Long> {
 
     @Query("select p from Post p where p.status = :status")
     List<Post> findAllByStatus(@Param("status") Status status);
-
 }

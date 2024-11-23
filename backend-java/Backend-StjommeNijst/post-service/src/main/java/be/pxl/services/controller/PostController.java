@@ -41,6 +41,12 @@ public class PostController {
         return ResponseEntity.ok(postService.getPostById(id));
     }
 
+    @GetMapping("/concepts")
+    public ResponseEntity<List<PostResponse>> getConceptPosts() {
+        List<PostResponse> posts = postService.getConceptPosts();
+        return ResponseEntity.ok(posts);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<PostResponse> updatePost(@PathVariable("id") Long id,
                                                    @RequestBody PostRequest postRequest,

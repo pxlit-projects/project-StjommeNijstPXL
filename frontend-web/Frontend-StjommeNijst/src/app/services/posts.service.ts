@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Post } from '../models/post.model'; // Import the PostResponse model
 import { AuthService } from './auth.service';
+import { Status } from '../models/post-status.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +30,10 @@ export class PostService {
     });
   
     return this.http.put<Post>(`${this.apiUrl}/${id}`, post, { headers });
+  }
+
+  getSavedConcepts(): Observable<Post[]> {
+    return this.http.get<Post[]>(`${this.apiUrl}/concepts`);
   }
 
   // Create a new post (optional based on your need)
@@ -57,6 +62,8 @@ export class PostService {
     if (filter.keyword) {
       params = params.set('keyword', filter.keyword);
     }
+
+    params = params.set('status', Status.NIET_GOEDGEKEURD)
 
     return this.http.get<Post[]>(`${this.apiUrl}/filter`, { params });
   }
