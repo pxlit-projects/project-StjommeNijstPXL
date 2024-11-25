@@ -10,9 +10,14 @@ import { Status } from '../models/post-status.enum';
   providedIn: 'root',
 })
 export class PostService {
+  
   private apiUrl = 'http://localhost:8085/api/posts';  // Adjust this URL to your backend
 
   constructor(private http: HttpClient = inject(HttpClient), private authservice: AuthService) {}
+
+  getNotApprovedPosts() {
+    return this.http.get<Post[]>(`${this.apiUrl}/notapproved`);
+  }
 
   // Fetch all posts from the backend
   getAllPosts(): Observable<Post[]> {

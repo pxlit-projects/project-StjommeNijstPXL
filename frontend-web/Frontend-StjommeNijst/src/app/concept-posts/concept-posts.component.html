@@ -1,10 +1,11 @@
- 
- <div class="saved-posts-container">
- @if(conceptPosts.length == 0){
-    <div class="no-concepts">    
-        <p>Er zijn geen opgeslagen concepten.</p>
-    </div>
-}
+<div class="posts-container">
+  <h2>All Posts</h2>
+  <div class="saved-posts-container">
+  @if(conceptPosts.length == 0){
+      <div class="no-concepts">    
+          <p>Er zijn geen opgeslagen concepten.</p>
+      </div>
+  }
   @for(post of conceptPosts; track post.id){
     <div class="post">
       <h3>{{ post.title }}</h3>
@@ -14,5 +15,6 @@
       <button routerLink="/edit-post/{{ post.id }}" class="create-post-button">Edit</button>
     </div>
   }
+  </div>
 </div>
   

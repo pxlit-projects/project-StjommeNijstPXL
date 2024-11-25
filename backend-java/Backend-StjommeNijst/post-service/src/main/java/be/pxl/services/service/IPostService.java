@@ -7,14 +7,10 @@ import java.util.List;
 
 public interface IPostService {
     PostResponse createPost(PostRequest postRequest);
-
     List<PostResponse> getAllPosts();
-
     PostResponse updatePost(Long id, PostRequest postRequest);
-
     PostResponse getPostById(Long id);
-
     List<PostResponse> getFilteredPosts(String startDate, String endDate, String author, String keyword);
-
     List<PostResponse> getConceptPosts();
+    List<PostResponse> getNotApprovedPosts();
 }

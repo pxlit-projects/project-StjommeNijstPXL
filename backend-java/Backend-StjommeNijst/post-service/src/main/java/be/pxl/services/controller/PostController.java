@@ -47,6 +47,12 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
 
+    @GetMapping("/notapproved")
+    public ResponseEntity<List<PostResponse>> getNotApprovedPosts() {
+        List<PostResponse> posts = postService.getNotApprovedPosts();
+        return ResponseEntity.ok(posts);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<PostResponse> updatePost(@PathVariable("id") Long id,
                                                    @RequestBody PostRequest postRequest,

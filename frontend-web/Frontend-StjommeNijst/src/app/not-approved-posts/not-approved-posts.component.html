@@ -1,0 +1,20 @@
+<div class="posts-container">
+    <h2>Nog goed te keuren posts</h2>
+    <div class="saved-posts-container">
+    @if(notApporvedPosts.length == 0){
+        <div class="no-concepts">    
+            <p>Er zijn geen posts die goedgekeurd moeten worden.</p>
+        </div>
+    }
+    @for(post of notApporvedPosts; track post.id){
+      <div class="post">
+        <h3>{{ post.title }}</h3>
+        <p>{{ post.content }}</p>
+        <p><strong>Auteur:</strong> {{ post.author }}</p>
+        <p><strong>Gemaakt op:</strong> {{ post.createdAt }}</p>
+        <button class="create-post-button">Goedkeuren</button>
+      </div>
+    }
+    </div>
+  </div>
+    
