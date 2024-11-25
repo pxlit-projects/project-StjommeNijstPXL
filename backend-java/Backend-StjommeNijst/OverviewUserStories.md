@@ -1,6 +1,6 @@
 US1 - klaar: Als redacteur wil ik nieuwe posts kunnen aanmaken, zodat ik nieuws en updates kan delen met de organisatie.
 
-US2: Als redacteur wil ik posts kunnen opslaan als concept, zodat ik er later aan kan verderwerken of kan wachten op goedkeuring
+US2 - klaar: Als redacteur wil ik posts kunnen opslaan als concept, zodat ik er later aan kan verderwerken of kan wachten op goedkeuring
 
 US3 - klaar: Als redacteur wil ik de inhoud van een post kunnen bewerken, zodat ik fouten kan corrigeren en inhoud kan bijwerken.
 

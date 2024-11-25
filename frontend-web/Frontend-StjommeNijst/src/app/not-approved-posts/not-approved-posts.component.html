@@ -1,18 +1,28 @@
 <div class="posts-container">
     <h2>Nog goed te keuren posts</h2>
     <div class="saved-posts-container">
-    @if(notApporvedPosts.length == 0){
+    @if(notApprovedPosts.length == 0){
         <div class="no-concepts">    
             <p>Er zijn geen posts die goedgekeurd moeten worden.</p>
         </div>
     }
-    @for(post of notApporvedPosts; track post.id){
+    @for(post of notApprovedPosts; track post.id){
       <div class="post">
+        <h1>{{post.id}}</h1>
         <h3>{{ post.title }}</h3>
         <p>{{ post.content }}</p>
         <p><strong>Auteur:</strong> {{ post.author }}</p>
         <p><strong>Gemaakt op:</strong> {{ post.createdAt }}</p>
-        <button class="create-post-button">Goedkeuren</button>
+        <button 
+          class="create-post-button" 
+          (click)="approvePost(post.id)">
+          Goedkeuren
+        </button>
+        <button 
+          class="create-post-button" 
+          (click)="rejectPost(post.id)">
+          Afwijzen
+        </button>
       </div>
     }
     </div>

@@ -1,7 +1,7 @@
 package be.pxl.services.controller;
 
-import be.pxl.services.domain.Dto.PostRequest;
-import be.pxl.services.domain.Dto.PostResponse;
+import be.pxl.services.domain.dto.PostRequest;
+import be.pxl.services.domain.dto.PostResponse;
 import be.pxl.services.service.PostService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

@@ -1,12 +1,15 @@
 package be.pxl.services.service;
 
-import be.pxl.services.domain.Dto.PostRequest;
-import be.pxl.services.domain.Dto.PostResponse;
+import be.pxl.services.domain.dto.PostRequest;
+import be.pxl.services.domain.dto.PostResponse;
+import be.pxl.services.domain.dto.PostReviewMessage;
 import be.pxl.services.domain.Post;
 import be.pxl.services.domain.Status;
 import be.pxl.services.repository.IPostRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cglib.core.Local;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,6 +21,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostService implements IPostService {
 
+    private final RabbitTemplate rabbitTemplate;
     private final IPostRepository postRepository;
 
     public LocalDateTime fromStringToLocalDateTime(String date) {
@@ -53,9 +57,23 @@ public class PostService implements IPostService {
 
     @Override
     public PostResponse createPost(PostRequest postRequest) {
-        postRepository.save(mapToPost(postRequest));
-        return mapToPostResponse(mapToPost(postRequest));
+        Post post = mapToPost(postRequest);
+        Post savedPost = postRepository.save(post);
+
+        if (savedPost.getStatus() == Status.WACHTEND) {
+            // Verstuur naar RabbitMQ
+            rabbitTemplate.convertAndSend("review-queue", new PostReviewMessage(
+                    savedPost.getId(),
+                    savedPost.getTitle(),
+                    savedPost.getContent(),
+                    savedPost.getAuthor(),
+                    fromLocalDateTimeToString(savedPost.getCreatedAt()),
+                    savedPost.getStatus().name()
+            ));
+        }
+        return mapToPostResponse(savedPost);
     }
+
 
     @Override
     public List<PostResponse> getAllPosts() {
@@ -78,7 +96,7 @@ public class PostService implements IPostService {
 
     @Override
     public List<PostResponse> getNotApprovedPosts(){
-        List<Post> posts = postRepository.findAllByStatus(Status.NIET_GOEDGEKEURD);
+        List<Post> posts = postRepository.findAllByStatus(Status.WACHTEND);
         return posts.stream()
                 .map(this::mapToPostResponse)
                 .collect(Collectors.toList());
@@ -94,6 +112,17 @@ public class PostService implements IPostService {
             existingPost.setCreatedAt(fromStringToLocalDateTime(postRequest.getCreatedAt()));
             existingPost.setStatus(postRequest.getStatus());
 
+            if (existingPost.getStatus() == Status.WACHTEND) {
+                // Verstuur naar RabbitMQ
+                rabbitTemplate.convertAndSend("review-queue", new PostReviewMessage(
+                        existingPost.getId(),
+                        existingPost.getTitle(),
+                        existingPost.getContent(),
+                        existingPost.getAuthor(),
+                        fromLocalDateTimeToString(existingPost.getCreatedAt()),
+                        existingPost.getStatus().name()
+                ));
+            }
             postRepository.save(existingPost);
 
             return mapToPostResponse(existingPost);
@@ -127,5 +156,14 @@ public class PostService implements IPostService {
         return posts.stream()
                 .map(this::mapToPostResponse)
                 .collect(Collectors.toList());
+    }
+
+    @RabbitListener(queues = "update-queue")
+    public void handleStatusUpdate(PostReviewMessage message) {
+        Post post = postRepository.findById(message.getPostId()).orElse(null);
+        if (post != null) {
+            post.setStatus(Status.valueOf(message.getStatus()));
+            postRepository.save(post);
+        }
     }
 }

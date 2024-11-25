@@ -11,12 +11,23 @@ import { Status } from '../models/post-status.enum';
 })
 export class PostService {
   
-  private apiUrl = 'http://localhost:8085/api/posts';  // Adjust this URL to your backend
+  private apiUrl = 'http://localhost:8085/api/posts';
+  private apiUrlReview = 'http://localhost:8086/api/review';  // Adjust this URL to your backend
 
   constructor(private http: HttpClient = inject(HttpClient), private authservice: AuthService) {}
 
-  getNotApprovedPosts() {
-    return this.http.get<Post[]>(`${this.apiUrl}/notapproved`);
+  getNotApprovedPosts(): Observable<Post[]> {
+    return this.http.get<Post[]>(`${this.apiUrlReview}/pending`);
+  }
+
+  // Keur een post goed via de review-service
+  approvePost(postId: number): Observable<string> {
+    return this.http.post<string>(`${this.apiUrlReview}/${postId}/approve`, null);
+  }
+
+  // Wijs een post af via de review-service
+  rejectPost(postId: number): Observable<string> {
+    return this.http.post<string>(`${this.apiUrlReview}/${postId}/reject`, null);
   }
 
   // Fetch all posts from the backend
@@ -68,7 +79,7 @@ export class PostService {
       params = params.set('keyword', filter.keyword);
     }
 
-    params = params.set('status', Status.NIET_GOEDGEKEURD)
+    params = params.set('status', Status.GOEDGEKEURD)
 
     return this.http.get<Post[]>(`${this.apiUrl}/filter`, { params });
   }

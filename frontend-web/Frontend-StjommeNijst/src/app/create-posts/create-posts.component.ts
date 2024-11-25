@@ -63,7 +63,7 @@ export class CreatePostsComponent {
         content: this.content,
         author: this.author,
         createdAt: formattedDate,
-        status: Status.NIET_GOEDGEKEURD
+        status: Status.WACHTEND
       };
 
       this.postService.createPost(newPost).subscribe({

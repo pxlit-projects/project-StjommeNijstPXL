@@ -21,9 +21,15 @@ spring:
         - id: post-service
           uri: lb://post-service
           predicates:
-            - Path=/api/post/**
+            - Path=/api/posts/**
           filters:
-            - RewritePath=/api/post/(?<path>.*), /$\{path}
+            - RewritePath=/api/posts/(?<path>.*), /$\{path}
+        - id: review-service
+          uri: lb://review-service
+          predicates:
+            - Path=/api/review/**
+          filters:
+            - RewritePath=/api/review/(?<path>.*), /$\{path}
 
 eureka:
   client:
