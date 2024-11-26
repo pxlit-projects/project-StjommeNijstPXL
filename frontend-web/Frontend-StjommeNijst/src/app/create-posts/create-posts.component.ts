@@ -25,6 +25,10 @@ export class CreatePostsComponent {
     this.author = this.authService.getUserName();
   }
 
+  goToDeclinedPosts(): void {
+    this.router.navigate(['/declined-posts']);
+  }
+
   goToSavedPosts(): void {
     this.router.navigate(['/concept-posts']);
   }

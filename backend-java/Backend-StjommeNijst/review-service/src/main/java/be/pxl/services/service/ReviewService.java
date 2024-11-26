@@ -91,7 +91,7 @@ public class ReviewService {
     }
 
     public ResponseEntity<Map<String, Object>> rejectPost(Long postId, String commentary) {
-        String message = updatePostStatus(postId, ReviewStatus.NIET_GOEDGEKEURD, "is afgewezen: " + commentary);
+        String message = updatePostStatus(postId, ReviewStatus.NIET_GOEDGEKEURD, commentary);
         Map<String, Object> response = new HashMap<>();
         response.put("message", message);
         response.put("commentary", commentary);

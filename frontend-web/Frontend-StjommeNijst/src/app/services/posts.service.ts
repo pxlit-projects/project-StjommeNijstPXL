@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Post } from '../models/post.model'; // Import the PostResponse model
 import { AuthService } from './auth.service';
 import { Status } from '../models/post-status.enum';
+import { PostWithComment } from '../models/postWithComment.model';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,10 @@ export class PostService {
 
   getNotApprovedPosts(): Observable<Post[]> {
     return this.http.get<Post[]>(`${this.apiUrlReview}/pending`);
+  }
+
+  getDeclinedPosts(): Observable<PostWithComment[]>{
+    return this.http.get<PostWithComment[]>(`${this.apiUrl}/declined`);
   }
 
   // Keur een post goed via de review-service

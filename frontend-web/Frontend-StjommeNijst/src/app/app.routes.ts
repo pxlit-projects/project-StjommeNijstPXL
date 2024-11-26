@@ -5,6 +5,7 @@ import { CreatePostsComponent } from './create-posts/create-posts.component';  /
 import { EditPostComponent } from './edit-post-component/edit-post-component.component';
 import { ConceptPostsComponent } from './concept-posts/concept-posts.component';
 import { NotApprovedPostsComponent } from './not-approved-posts/not-approved-posts.component';
+import { DeclinedPostsComponent } from './declined-posts/declined-posts.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -12,5 +13,6 @@ export const routes: Routes = [
   { path: 'create-post', component: CreatePostsComponent },
   { path: 'edit-post/:id', component: EditPostComponent },
   { path: 'concept-posts', component: ConceptPostsComponent },
-  { path: 'not-approved', component: NotApprovedPostsComponent }
+  { path: 'not-approved', component: NotApprovedPostsComponent },
+  { path: 'declined-posts', component: DeclinedPostsComponent },
 ];
