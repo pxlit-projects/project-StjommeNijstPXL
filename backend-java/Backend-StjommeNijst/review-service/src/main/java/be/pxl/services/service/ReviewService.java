@@ -8,11 +8,14 @@ import be.pxl.services.repository.IPostReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,7 +42,7 @@ public class ReviewService {
 
     private PostReview fromPostReviewMessageToPostReview(PostReviewMessage message){
         return PostReview.builder()
-                .id(message.getPostId())
+                .postId(message.getPostId())
                 .title(message.getTitle())
                 .content(message.getContent())
                 .author(message.getAuthor())
@@ -61,7 +64,8 @@ public class ReviewService {
 
     private PostReviewResponse toPostReviewResponse(PostReview postReview){
         return PostReviewResponse.builder()
-                .id(postReview.getPostId())
+                .id(postReview.getId())
+                .postid(postReview.getPostId())
                 .title(postReview.getTitle())
                 .status(postReview.getStatus())
                 .createdAt(fromLocalDateTimeToString(postReview.getCreatedAt()))
@@ -78,14 +82,18 @@ public class ReviewService {
                 .collect(Collectors.toList());
     }
 
-    // Keur een post goed
-    public String approvePost(Long postId) {
-        return updatePostStatus(postId, ReviewStatus.GOEDGEKEURD);
+    public ResponseEntity<Map<String, Object>> approvePost(Long postId) {
+        String message = updatePostStatus(postId, ReviewStatus.GOEDGEKEURD);
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", message);
+        return ResponseEntity.ok(response);
     }
 
-    // Wijs een post af
-    public String rejectPost(Long postId) {
-        return updatePostStatus(postId, ReviewStatus.NIET_GOEDGEKEURD);
+    public ResponseEntity<Map<String, Object>> rejectPost(Long postId) {
+        String message = updatePostStatus(postId, ReviewStatus.NIET_GOEDGEKEURD);
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", message);
+        return ResponseEntity.ok(response);
     }
 
     // Algemene methode om de status van een post te wijzigen

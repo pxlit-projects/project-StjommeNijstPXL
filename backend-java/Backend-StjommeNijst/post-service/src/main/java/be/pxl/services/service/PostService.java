@@ -59,7 +59,7 @@ public class PostService implements IPostService {
     public PostResponse createPost(PostRequest postRequest) {
         Post post = mapToPost(postRequest);
         Post savedPost = postRepository.save(post);
-
+        System.out.println(savedPost.getId());
         if (savedPost.getStatus() == Status.WACHTEND) {
             // Verstuur naar RabbitMQ
             rabbitTemplate.convertAndSend("review-queue", new PostReviewMessage(

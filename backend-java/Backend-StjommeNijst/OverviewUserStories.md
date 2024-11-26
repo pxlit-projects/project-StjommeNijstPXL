@@ -8,7 +8,7 @@ US4 - klaar: Als gebruiker wil ik een overzicht van gepubliceerde posts kunnen z
 
 US5 - klaar: Als gebruiker wil ik posts kunnen filteren op basis van inhoud, auteur, datum
 
-US7: Als redacteur wil ik ingediende posts kunnen bekijken en goedkeuren of afwijzen, zodat alleen goedgekeurde content wordt gepubliceerd.
+US7 - klaar: Als redacteur wil ik ingediende posts kunnen bekijken en goedkeuren of afwijzen, zodat alleen goedgekeurde content wordt gepubliceerd.
 
 US8: Als redacteur wil ik een melding ontvangen wanneer een post goedgekeurd of afgewezen is, zodat ik weet of het gepubliceerd kan worden of moet worden herzien.
 

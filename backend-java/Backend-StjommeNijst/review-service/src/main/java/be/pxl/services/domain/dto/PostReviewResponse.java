@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PostReviewResponse {
     private Long id;
+    private Long postid;
     private String title;
     private String content;
     private String author;

@@ -18,8 +18,7 @@ public class PostReview {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private Long postId; // ID van de post uit de Post-service
+    private Long postId;
     private String title;
     private String content;
     private String author;

@@ -8,7 +8,6 @@
     }
     @for(post of notApprovedPosts; track post.id){
       <div class="post">
-        <h1>{{post.id}}</h1>
         <h3>{{ post.title }}</h3>
         <p>{{ post.content }}</p>
         <p><strong>Auteur:</strong> {{ post.author }}</p>

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/review")
@@ -23,9 +24,9 @@ public class ReviewController {
 
     // Keur een post goed
     @PostMapping("/{postId}/approve")
-    public ResponseEntity<String> approvePost(@PathVariable Long postId) {
+    public ResponseEntity<Map<String, Object>> approvePost(@PathVariable Long postId) {
         try {
-            return ResponseEntity.ok(reviewService.approvePost(postId));
+            return ResponseEntity.ok(reviewService.approvePost(postId).getBody());
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
@@ -33,9 +34,9 @@ public class ReviewController {
 
     // Wijs een post af
     @PostMapping("/{postId}/reject")
-    public ResponseEntity<String> rejectPost(@PathVariable Long postId) {
+    public ResponseEntity<Map<String, Object>> rejectPost(@PathVariable Long postId) {
         try {
-            return ResponseEntity.ok(reviewService.rejectPost(postId));
+            return ResponseEntity.ok(reviewService.rejectPost(postId).getBody());
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
