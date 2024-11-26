@@ -1,8 +1,6 @@
 package be.pxl.services.service;
 
-import be.pxl.services.domain.dto.PostRequest;
-import be.pxl.services.domain.dto.PostResponse;
-import be.pxl.services.domain.dto.PostReviewMessage;
+import be.pxl.services.domain.dto.*;
 import be.pxl.services.domain.Post;
 import be.pxl.services.domain.Status;
 import be.pxl.services.repository.IPostRepository;
@@ -55,6 +53,18 @@ public class PostService implements IPostService {
                 .build();
     }
 
+    public PostResponseWithComment mapToPostResponseWithComment(Post post) {
+        return PostResponseWithComment.builder()
+                .id(post.getId())
+                .author(post.getAuthor())
+                .content(post.getContent())
+                .title(post.getTitle())
+                .createdAt(fromLocalDateTimeToString(post.getCreatedAt()))
+                .status(post.getStatus())
+                .comment(post.getComment())
+                .build();
+    }
+
     @Override
     public PostResponse createPost(PostRequest postRequest) {
         Post post = mapToPost(postRequest);
@@ -90,6 +100,13 @@ public class PostService implements IPostService {
         List<Post> posts = postRepository.findAllByStatus(Status.CONCEPT);
         return posts.stream()
                 .map(this::mapToPostResponse)
+                .collect(Collectors.toList());
+    }
+
+    public List<PostResponseWithComment> getDeclinedPosts(){
+        List<Post> posts = postRepository.findAllByStatus(Status.NIET_GOEDGEKEURD);
+        return posts.stream()
+                .map(this::mapToPostResponseWithComment)
                 .collect(Collectors.toList());
     }
 
@@ -159,10 +176,11 @@ public class PostService implements IPostService {
     }
 
     @RabbitListener(queues = "update-queue")
-    public void handleStatusUpdate(PostReviewMessage message) {
+    public void handleStatusUpdate(PostReviewMessageWithComment message) {
         Post post = postRepository.findById(message.getPostId()).orElse(null);
         if (post != null) {
             post.setStatus(Status.valueOf(message.getStatus()));
+            post.setComment(message.getComment());
             postRepository.save(post);
         }
     }

@@ -51,7 +51,7 @@ public class ReviewService {
                 .build();
     }
 
-    private PostReviewMessage fromPostReviewToPostReviewMessage(PostReview postReview){
+    private PostReviewMessage fromPostReviewToPostReviewMessage(PostReview postReview, String commentary){
          return PostReviewMessage.builder()
                  .postId(postReview.getPostId())
                  .title(postReview.getTitle())
@@ -59,6 +59,7 @@ public class ReviewService {
                  .createdAt(fromLocalDateTimeToString(postReview.getCreatedAt()))
                  .content(postReview.getContent())
                  .author(postReview.getAuthor())
+                 .comment(commentary)
                  .build();
     }
 
@@ -83,27 +84,29 @@ public class ReviewService {
     }
 
     public ResponseEntity<Map<String, Object>> approvePost(Long postId) {
-        String message = updatePostStatus(postId, ReviewStatus.GOEDGEKEURD);
+        String message = updatePostStatus(postId, ReviewStatus.GOEDGEKEURD, "is goedgekeurd");
         Map<String, Object> response = new HashMap<>();
         response.put("message", message);
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<Map<String, Object>> rejectPost(Long postId) {
-        String message = updatePostStatus(postId, ReviewStatus.NIET_GOEDGEKEURD);
+    public ResponseEntity<Map<String, Object>> rejectPost(Long postId, String commentary) {
+        String message = updatePostStatus(postId, ReviewStatus.NIET_GOEDGEKEURD, "is afgewezen: " + commentary);
         Map<String, Object> response = new HashMap<>();
         response.put("message", message);
+        response.put("commentary", commentary);
         return ResponseEntity.ok(response);
     }
+
 
     // Algemene methode om de status van een post te wijzigen
-    private String updatePostStatus(Long postId, ReviewStatus newStatus) {
+    private String updatePostStatus(Long postId, ReviewStatus newStatus, String commentary) {
         PostReview post = reviewRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Post met ID " + postId + " niet gevonden."));
         post.setStatus(newStatus);
         reviewRepository.save(post);
 
-        PostReviewMessage message = fromPostReviewToPostReviewMessage(post);
+        PostReviewMessage message = fromPostReviewToPostReviewMessage(post, commentary);
 
         rabbitTemplate.convertAndSend("update-queue", message); // Stuur terug naar de Post-service
         return "Post is " + newStatus.toString().toLowerCase() + "!";

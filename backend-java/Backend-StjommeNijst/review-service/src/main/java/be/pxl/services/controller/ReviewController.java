@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,12 +35,20 @@ public class ReviewController {
 
     // Wijs een post af
     @PostMapping("/{postId}/reject")
-    public ResponseEntity<Map<String, Object>> rejectPost(@PathVariable Long postId) {
+    public ResponseEntity<Map<String, String>> rejectPost(
+            @PathVariable Long postId,
+            @RequestBody Map<String, String> payload) {
         try {
-            return ResponseEntity.ok(reviewService.rejectPost(postId).getBody());
+            String commentary = payload.get("comment");
+            reviewService.rejectPost(postId, commentary);
+
+            Map<String, String> response = new HashMap<>();
+            response.put("comment", commentary);
+            return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
     }
+
 }
 

@@ -26,9 +26,10 @@ export class PostService {
   }
 
   // Wijs een post af via de review-service
-  rejectPost(postId: number): Observable<string> {
-    return this.http.post<string>(`${this.apiUrlReview}/${postId}/reject`, null);
-  }
+  rejectPostWithComment(postId: number, comment: string): Observable<string> {
+    return this.http.post<string>(`${this.apiUrlReview}/${postId}/reject`, { comment });
+}
+
 
   // Fetch all posts from the backend
   getAllPosts(): Observable<Post[]> {

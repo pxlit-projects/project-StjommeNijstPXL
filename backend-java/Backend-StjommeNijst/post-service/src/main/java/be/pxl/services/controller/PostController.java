@@ -2,6 +2,7 @@ package be.pxl.services.controller;
 
 import be.pxl.services.domain.dto.PostRequest;
 import be.pxl.services.domain.dto.PostResponse;
+import be.pxl.services.domain.dto.PostResponseWithComment;
 import be.pxl.services.service.PostService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +45,12 @@ public class PostController {
     @GetMapping("/concepts")
     public ResponseEntity<List<PostResponse>> getConceptPosts() {
         List<PostResponse> posts = postService.getConceptPosts();
+        return ResponseEntity.ok(posts);
+    }
+
+    @GetMapping("/declined")
+    public ResponseEntity<List<PostResponseWithComment>> getDeclinedPosts() {
+        List<PostResponseWithComment> posts = postService.getDeclinedPosts();
         return ResponseEntity.ok(posts);
     }
 

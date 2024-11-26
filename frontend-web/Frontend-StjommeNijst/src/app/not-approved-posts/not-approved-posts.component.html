@@ -1,29 +1,49 @@
 <div class="posts-container">
-    <h2>Nog goed te keuren posts</h2>
-    <div class="saved-posts-container">
-    @if(notApprovedPosts.length == 0){
-        <div class="no-concepts">    
-            <p>Er zijn geen posts die goedgekeurd moeten worden.</p>
-        </div>
-    }
-    @for(post of notApprovedPosts; track post.id){
-      <div class="post">
-        <h3>{{ post.title }}</h3>
-        <p>{{ post.content }}</p>
-        <p><strong>Auteur:</strong> {{ post.author }}</p>
-        <p><strong>Gemaakt op:</strong> {{ post.createdAt }}</p>
+  <h2>Nog goed te keuren posts</h2>
+  <div class="saved-posts-container">
+  @if(notApprovedPosts.length == 0){
+      <div class="no-concepts">    
+          <p>Er zijn geen posts die goedgekeurd moeten worden.</p>
+      </div>
+  }
+  @for(post of notApprovedPosts; track post.id){
+    <div class="post">
+      <h3>{{ post.title }}</h3>
+      <p>{{ post.content }}</p>
+      <p><strong>Auteur:</strong> {{ post.author }}</p>
+      <p><strong>Gemaakt op:</strong> {{ post.createdAt }}</p>
+      <button 
+        class="create-post-button" 
+        (click)="approvePost(post.id)">
+        Goedkeuren
+      </button>
+      <button 
+        class="create-post-button" 
+        (click)="toggleRejectForm(post.id)">
+        Afwijzen
+      </button>
+
+      <!-- Dynamisch formulier voor commentaar -->
+      @if(activeRejectForm === post.id){
+      <div class="reject-form">
+        <textarea
+          [(ngModel)]="rejectComments[post.id]"
+          placeholder="Voer een commentaar in voor de afwijzing..."
+          rows="3">
+        </textarea>
         <button 
           class="create-post-button" 
-          (click)="approvePost(post.id)">
-          Goedkeuren
+          (click)="confirmReject(post.id)">
+          Bevestig Afwijzen
         </button>
         <button 
-          class="create-post-button" 
-          (click)="rejectPost(post.id)">
-          Afwijzen
+          class="cancel-button" 
+          (click)="cancelReject()">
+          Annuleer
         </button>
       </div>
     }
     </div>
+  }
   </div>
-    
+</div>
