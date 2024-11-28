@@ -21,9 +21,6 @@
         <p>{{ post.content }}</p>
         <small class="post-author">Geschreven door: {{ post.author }}</small>
         <small class="post-author">Gepubliceerd op: {{ post.createdAt }}</small><br>
-        @if(isRedacteur == true){
-        <button routerLink="/edit-post/{{ post.id }}" class="create-post-button">Edit</button>
-        }
       </div>
       }
     </div>

@@ -1,5 +1,8 @@
 package be.pxl.services.service;
 
+import jakarta.mail.*;
+import jakarta.mail.internet.*;
+import java.util.Properties;
 import be.pxl.services.domain.PostReview;
 import be.pxl.services.domain.ReviewStatus;
 import be.pxl.services.domain.dto.PostReviewMessage;
@@ -10,7 +13,6 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -101,6 +103,7 @@ public class ReviewService {
 
     // Algemene methode om de status van een post te wijzigen
     private String updatePostStatus(Long postId, ReviewStatus newStatus, String commentary) {
+        // Step 1: Update the post status
         PostReview post = reviewRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Post met ID " + postId + " niet gevonden."));
         post.setStatus(newStatus);
@@ -108,7 +111,73 @@ public class ReviewService {
 
         PostReviewMessage message = fromPostReviewToPostReviewMessage(post, commentary);
 
-        rabbitTemplate.convertAndSend("update-queue", message); // Stuur terug naar de Post-service
+        rabbitTemplate.convertAndSend("update-queue", message); // Send back to the Post service
+
+        // Step 2: Send an email notification
+        sendEmailNotification(postId, newStatus, commentary);
+
         return "Post is " + newStatus.toString().toLowerCase() + "!";
+    }
+
+    private void sendEmailNotification(Long postId, ReviewStatus newStatus, String commentary) {
+        // SMTP configuration
+        Properties prop = new Properties();
+        prop.put("mail.smtp.auth", true);
+        prop.put("mail.smtp.starttls.enable", "true");
+        prop.put("mail.smtp.host","sandbox.smtp.mailtrap.io");
+        prop.put("mail.smtp.port", "587");
+        prop.put("mail.smtp.ssl.trust", "sandbox.smtp.mailtrap.io");
+
+        // Authenticate with username and password
+        String username = "ef5cba8bd8defb";
+        String password = "858006b50afa23";
+
+        Session session = Session.getInstance(prop, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+        });
+
+        try {
+            // Create the email message
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("no-reply@pxlnews.com"));
+            message.setRecipients(
+                    Message.RecipientType.TO, InternetAddress.parse("stjomme.nijst.redacteur@pxlnews.com"));
+            message.setSubject("Post Status Update");
+            String emailContent = "";
+            // Construct the email body
+            if(newStatus.equals(ReviewStatus.GOEDGEKEURD))
+            {
+                emailContent = String.format(
+                        "Post met id ID %d is %s",
+                        postId, newStatus.toString().toLowerCase()
+                );
+            }
+            else {
+                emailContent = String.format(
+                        "Post met id ID %d is %s met commentaar: %s",
+                        postId, newStatus.toString().toLowerCase(), commentary
+                );
+            }
+
+            MimeBodyPart mimeBodyPart = new MimeBodyPart();
+            mimeBodyPart.setContent(emailContent, "text/html; charset=utf-8");
+
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(mimeBodyPart);
+
+            message.setContent(multipart);
+
+            // Send the email
+            Transport.send(message);
+
+            System.out.println("Email sent successfully!");
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to send email");
+        }
     }
 }
