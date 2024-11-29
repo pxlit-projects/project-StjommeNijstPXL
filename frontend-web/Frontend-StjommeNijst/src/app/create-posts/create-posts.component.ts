@@ -35,13 +35,15 @@ export class CreatePostsComponent {
 
   saveAsDraft(): void {
     if (this.title && this.content && this.author) {
-      const formattedDate = `${this.now.getFullYear()}-${this.now.getMonth() + 1}-${this.now.getDate()} ${this.now.getHours()}:${this.now.getMinutes()}:${this.now.getSeconds()}`;
+      const pad = (num: number) => num < 10 ? '0' + num : num;
+      const formattedDate = `${this.now.getFullYear()}-${pad(this.now.getMonth() + 1)}-${pad(this.now.getDate())} ${pad(this.now.getHours())}:${pad(this.now.getMinutes())}:${pad(this.now.getSeconds())}`;
+    
       const newPost = {
         title: this.title,
         content: this.content,
         author: this.author,
         createdAt: formattedDate,
-        status: Status.CONCEPT // Specifiek opslaan als concept
+        status: Status.CONCEPT
       };
   
       this.postService.createPost(newPost).subscribe({
@@ -61,7 +63,9 @@ export class CreatePostsComponent {
 
   createPost(): void {
     if (this.title && this.content && this.author) {
-      const formattedDate = `${this.now.getFullYear()}-${this.now.getMonth() + 1}-${this.now.getDate()} ${this.now.getHours()}:${this.now.getMinutes()}:${this.now.getSeconds()}`;
+      const pad = (num: number) => num < 10 ? '0' + num : num;
+      const formattedDate = `${this.now.getFullYear()}-${pad(this.now.getMonth() + 1)}-${pad(this.now.getDate())} ${pad(this.now.getHours())}:${pad(this.now.getMinutes())}:${pad(this.now.getSeconds())}`;
+    
       const newPost = {
         title: this.title,
         content: this.content,
