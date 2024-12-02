@@ -179,5 +179,11 @@ public class ReviewService {
             e.printStackTrace();
             throw new RuntimeException("Failed to send email");
         }
+
+
+    }
+
+    public void deleteAllReviews(){
+        reviewRepository.deleteAll();
     }
 }

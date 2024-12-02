@@ -50,5 +50,10 @@ public class ReviewController {
         }
     }
 
+    @DeleteMapping
+    public void deleteReviews(){
+        reviewService.deleteAllReviews();
+    }
+
 }
 

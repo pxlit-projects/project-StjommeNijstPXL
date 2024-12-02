@@ -5,27 +5,20 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Post {
-
+public class UserComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
+    private Long postId;
     private String content;
     private String author;
     private LocalDateTime createdAt;
-    @Enumerated(EnumType.STRING)
-    private Status status;
-    private String comment;
-    @ElementCollection
-    private List<Long> userCommentIds;
-
 }

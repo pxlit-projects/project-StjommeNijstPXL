@@ -14,10 +14,10 @@ US8 - klaar: Als redacteur wil ik een melding ontvangen wanneer een post goedgek
 
 US9 - klaar: Als redacteur wil ik opmerkingen kunnen toevoegen bij afwijzing van een post, zodat de redacteur weet welke wijzigingen er nodig zijn.
 
-US10: Als gebruiker wil ik een reactie kunnen plaatsen op een post, zodat ik mijn mening kan delen of vragen kan stellen
+US10 - klaar: Als gebruiker wil ik een reactie kunnen plaatsen op een post, zodat ik mijn mening kan delen of vragen kan stellen
 
-US11:  Als gebruiker wil ik reacties van andere collega’s kunnen lezen, zodat ik een indruk krijg van hun mening of vragen over het artikel
+US11 - klaar:  Als gebruiker wil ik reacties van andere collega’s kunnen lezen, zodat ik een indruk krijg van hun mening of vragen over het artikel
 
-US12: Als gebruiker wil ik mijn eigen reacties kunnen bewerken of verwijderen, zodat ik altijd mijn eigen bijdragen kan corrigeren of verwijderen
+US12 - klaar: Als gebruiker wil ik mijn eigen reacties kunnen bewerken of verwijderen, zodat ik altijd mijn eigen bijdragen kan corrigeren of verwijderen
 
 US13: zorgen voor testen!!!

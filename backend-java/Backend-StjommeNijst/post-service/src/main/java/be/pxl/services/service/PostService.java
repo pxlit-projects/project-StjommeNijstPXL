@@ -1,5 +1,6 @@
 package be.pxl.services.service;
 
+import be.pxl.services.client.CommentClient;
 import be.pxl.services.domain.dto.*;
 import be.pxl.services.domain.Post;
 import be.pxl.services.domain.Status;
@@ -21,6 +22,8 @@ public class PostService implements IPostService {
 
     private final RabbitTemplate rabbitTemplate;
     private final IPostRepository postRepository;
+    private final CommentClient commentClient;
+
 
     public LocalDateTime fromStringToLocalDateTime(String date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -50,6 +53,7 @@ public class PostService implements IPostService {
                 .title(post.getTitle())
                 .createdAt(fromLocalDateTimeToString(post.getCreatedAt()))
                 .status(post.getStatus())
+                .commentId(post.getUserCommentIds())
                 .build();
     }
 
@@ -103,11 +107,17 @@ public class PostService implements IPostService {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public List<PostResponseWithComment> getDeclinedPosts(){
         List<Post> posts = postRepository.findAllByStatus(Status.NIET_GOEDGEKEURD);
         return posts.stream()
                 .map(this::mapToPostResponseWithComment)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deletePosts() {
+        postRepository.deleteAll();
     }
 
 
@@ -183,5 +193,31 @@ public class PostService implements IPostService {
             post.setComment(message.getComment());
             postRepository.save(post);
         }
+    }
+
+    public void addUserComment(Long postId, UserCommentRequest commentRequest) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("Post not found"));
+
+        commentClient.addCommentToPost(postId, commentRequest); // Stuur de reactie naar Comment-Service
+    }
+
+    public List<UserCommentResponse> getUserComments(Long postId) {
+        return commentClient.getCommentsByPost(postId); // Ophalen van reacties uit Comment-Service
+    }
+
+    public UserCommentResponse updateUserComment(Long commentId, UserCommentRequest request) {
+        return commentClient.updateComment(commentId, request);
+    }
+
+    public String deleteUserComment(Long postId, Long commentId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("Post not found"));
+
+        String text = commentClient.deleteComment(commentId);
+        post.getUserCommentIds().remove(commentId);
+        postRepository.save(post);
+
+        return text;
     }
 }

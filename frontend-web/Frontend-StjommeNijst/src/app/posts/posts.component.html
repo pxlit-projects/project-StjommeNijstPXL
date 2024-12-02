@@ -21,6 +21,34 @@
         <p>{{ post.content }}</p>
         <small class="post-author">Geschreven door: {{ post.author }}</small>
         <small class="post-author">Gepubliceerd op: {{ post.createdAt }}</small><br>
+        
+        <button (click)="toggleComments(post.id)" class="comment-toggle-button">
+          {{ post.showComments ? 'Verberg reacties' : 'Zie reacties' }}
+        </button>
+        @if(post.showComments){
+        <div class="comments-section">
+          <ul>
+            @for(comment of post.comments; track comment.id){
+              <li class="comment-item">
+              <p>{{ comment.content }}</p>
+              <small>- {{ comment.author }} op {{ comment.createdAt }}</small>
+              @if(isRedacteur == false){
+                <button (click)="editComment(post.id, comment)" class="edit-comment-button">Bewerk</button>
+                <button (click)="deleteComment(post.id, comment.id)" class="delete-comment-button">Verwijder</button>
+              }
+            </li>
+          }
+          </ul>
+          @if(isRedacteur == false){
+          <textarea
+            [(ngModel)]="newCommentContent[post.id]"
+            placeholder="Schrijf een reactie..."
+          ></textarea>
+          <button (click)="addComment(post.id)" class="add-comment-button">Plaats reactie</button>
+          }
+        </div>
+      }
+      
       </div>
       }
     </div>

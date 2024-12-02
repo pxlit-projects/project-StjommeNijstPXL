@@ -6,6 +6,9 @@ import { Post } from '../models/post.model'; // Import the PostResponse model
 import { AuthService } from './auth.service';
 import { Status } from '../models/post-status.enum';
 import { PostWithComment } from '../models/postWithComment.model';
+import { UserCommentRequest } from '../models/user-comment-request.model';
+import { UserCommentResponse } from '../models/user-comment-response.model';
+
 
 @Injectable({
   providedIn: 'root',
@@ -13,9 +16,25 @@ import { PostWithComment } from '../models/postWithComment.model';
 export class PostService {
   
   private apiUrl = 'http://localhost:8085/api/posts';
-  private apiUrlReview = 'http://localhost:8086/api/review';  // Adjust this URL to your backend
+  private apiUrlReview = 'http://localhost:8086/api/review';
 
   constructor(private http: HttpClient = inject(HttpClient), private authservice: AuthService) {}
+
+  updateComment(commentId: number, comment: UserCommentRequest): Observable<UserCommentResponse> {
+    return this.http.put<UserCommentResponse>(`${this.apiUrl}/comments/${commentId}`, comment);
+  }
+
+  deleteComment(postId: number, commentId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${postId}/comments/${commentId}`);
+  }
+
+  addCommentToPost(postId: number, comment: UserCommentRequest): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/${postId}/comments`, comment);
+  }
+
+  getCommentsByPost(postId: number): Observable<UserCommentResponse[]> {
+    return this.http.get<UserCommentResponse[]>(`${this.apiUrl}/${postId}/comments`);
+  }
 
   getNotApprovedPosts(): Observable<Post[]> {
     return this.http.get<Post[]>(`${this.apiUrlReview}/pending`);
@@ -104,3 +123,4 @@ export class PostService {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
 }
+

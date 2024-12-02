@@ -1,10 +1,9 @@
 package be.pxl.services.controller;
 
-import be.pxl.services.domain.dto.PostRequest;
-import be.pxl.services.domain.dto.PostResponse;
-import be.pxl.services.domain.dto.PostResponseWithComment;
+import be.pxl.services.domain.dto.*;
 import be.pxl.services.service.PostService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.ws.rs.DELETE;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +17,8 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+
+
 
     @PostMapping
     public ResponseEntity<PostResponse> createPost(@RequestBody PostRequest postRequest, HttpServletRequest request) {
@@ -87,5 +88,39 @@ public class PostController {
 
         List<PostResponse> posts = postService.getFilteredPosts(startDate, endDate, author, keyword);
         return ResponseEntity.ok(posts);
+    }
+
+    @DeleteMapping
+    public void deleteAllPosts(){
+        postService.deletePosts();
+    }
+
+    @PostMapping("/{postId}/comments")
+    public ResponseEntity<Void> addUserComment(
+            @PathVariable Long postId,
+            @RequestBody UserCommentRequest commentRequest) {
+        postService.addUserComment(postId, commentRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{postId}/comments")
+    public ResponseEntity<List<UserCommentResponse>> getUserComments(@PathVariable Long postId) {
+        return ResponseEntity.ok(postService.getUserComments(postId));
+    }
+
+    @DeleteMapping("/{postId}/comments/{commentId}")
+    public ResponseEntity<Void> deleteUserComment(
+            @PathVariable Long postId,
+            @PathVariable Long commentId)
+    {
+        String text = postService.deleteUserComment(postId, commentId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/comments/{commentId}")
+    public ResponseEntity<UserCommentResponse> updateUserComment(
+            @PathVariable Long commentId,
+            @RequestBody UserCommentRequest request) {
+        return ResponseEntity.ok(postService.updateUserComment(commentId, request));
     }
 }

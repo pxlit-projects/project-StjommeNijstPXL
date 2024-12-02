@@ -21,7 +21,9 @@ export class EditPostComponent implements OnInit {
     content: '',
     author: '',
     createdAt: '',
-    status: Status.NIET_GOEDGEKEURD
+    status: Status.NIET_GOEDGEKEURD,
+    showComments: false,
+    comments: [],
   };
 
   constructor(
@@ -35,7 +37,6 @@ export class EditPostComponent implements OnInit {
     this.fetchPostDetails();
   }
 
-  // Ophalen van post details op basis van postId
   fetchPostDetails(): void {
     this.postService.getPostById(this.postId).subscribe({
       next: (data) => {
@@ -47,9 +48,9 @@ export class EditPostComponent implements OnInit {
     });
   }
 
-  // Normaal opslaan van post (bijvoorbeeld goedkeuren)
   savePost(): void {
-    const formattedDate = `${this.now.getFullYear()}-${this.now.getMonth() + 1}-${this.now.getDate()} ${this.now.getHours()}:${this.now.getMinutes()}:${this.now.getSeconds()}`;
+    const pad = (num: number) => num < 10 ? '0' + num : num;
+    const formattedDate = `${this.now.getFullYear()}-${pad(this.now.getMonth() + 1)}-${pad(this.now.getDate())} ${pad(this.now.getHours())}:${pad(this.now.getMinutes())}:${pad(this.now.getSeconds())}`;
     this.post.status = Status.WACHTEND;
     this.post.createdAt = formattedDate;
     this.postService.updatePost(this.postId, this.post).subscribe({
@@ -63,11 +64,10 @@ export class EditPostComponent implements OnInit {
     });
   }
 
-  // Opslaan als concept (draft)
   saveAsDraft(): void {
     if (this.post.title && this.post.content && this.post.author) {
-      const formattedDate = `${this.now.getFullYear()}-${this.now.getMonth() + 1}-${this.now.getDate()} ${this.now.getHours()}:${this.now.getMinutes()}:${this.now.getSeconds()}`;
-      // Stel de status in als CONCEPT (draft)
+      const pad = (num: number) => num < 10 ? '0' + num : num;
+      const formattedDate = `${this.now.getFullYear()}-${pad(this.now.getMonth() + 1)}-${pad(this.now.getDate())} ${pad(this.now.getHours())}:${pad(this.now.getMinutes())}:${pad(this.now.getSeconds())}`;
       this.post.status = Status.CONCEPT;
       this.post.createdAt = formattedDate;
 
