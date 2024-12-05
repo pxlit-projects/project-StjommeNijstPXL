@@ -92,7 +92,7 @@ public class PostService implements IPostService {
     @Override
     public List<PostResponse> getAllPosts() {
         List<Post> approvedPosts = postRepository.findAll().stream()
-                .filter(post -> post.getStatus() == Status.GOEDGEKEURD) // Filter op goedgekeurde posts
+                .filter(post -> post.getStatus() == Status.GOEDGEKEURD)
                 .toList();
         return approvedPosts.stream()
                 .map(this::mapToPostResponse)
@@ -196,9 +196,6 @@ public class PostService implements IPostService {
     }
 
     public void addUserComment(Long postId, UserCommentRequest commentRequest) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("Post not found"));
-
         commentClient.addCommentToPost(postId, commentRequest); // Stuur de reactie naar Comment-Service
     }
 

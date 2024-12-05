@@ -22,13 +22,8 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<PostResponse> createPost(@RequestBody PostRequest postRequest, HttpServletRequest request) {
-        String role = request.getHeader("X-User-Role");
-        if ("Redacteur".equalsIgnoreCase(role)) {
-            PostResponse createdPost = postService.createPost(postRequest);
-            return ResponseEntity.ok(createdPost);
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
+        PostResponse createdPost = postService.createPost(postRequest);
+        return ResponseEntity.ok(createdPost);
     }
 
     @GetMapping
@@ -63,18 +58,12 @@ public class PostController {
 
     @PutMapping("/{id}")
     public ResponseEntity<PostResponse> updatePost(@PathVariable("id") Long id,
-                                                   @RequestBody PostRequest postRequest,
-                                                   HttpServletRequest request) {
-        String role = request.getHeader("X-User-Role");
-        if ("Redacteur".equalsIgnoreCase(role)) {
-            PostResponse updatedPost = postService.updatePost(id, postRequest);
-            if (updatedPost != null) {
-                return ResponseEntity.ok(updatedPost);
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-            }
+                                                   @RequestBody PostRequest postRequest) {
+        PostResponse updatedPost = postService.updatePost(id, postRequest);
+        if (updatedPost != null) {
+            return ResponseEntity.ok(updatedPost);
         } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
