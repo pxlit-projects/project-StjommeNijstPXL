@@ -35,20 +35,20 @@ public class ReviewController {
 
     // Wijs een post af
     @PostMapping("/{postId}/reject")
-    public ResponseEntity<Map<String, String>> rejectPost(
+    public ResponseEntity<Map<String, Object>> rejectPost(
             @PathVariable Long postId,
             @RequestBody Map<String, String> payload) {
         try {
             String commentary = payload.get("comment");
-            reviewService.rejectPost(postId, commentary);
+            ResponseEntity<Map<String, Object>> serviceResponse = reviewService.rejectPost(postId, commentary);
 
-            Map<String, String> response = new HashMap<>();
-            response.put("comment", commentary);
-            return ResponseEntity.ok(response);
+            // Voeg message en commentary toe aan de response
+            return ResponseEntity.ok(serviceResponse.getBody());
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
     }
+
 
     @DeleteMapping
     public void deleteReviews(){

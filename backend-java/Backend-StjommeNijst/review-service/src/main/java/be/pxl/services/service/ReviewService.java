@@ -102,7 +102,7 @@ public class ReviewService {
 
 
     // Algemene methode om de status van een post te wijzigen
-    private String updatePostStatus(Long postId, ReviewStatus newStatus, String commentary) {
+    public String updatePostStatus(Long postId, ReviewStatus newStatus, String commentary) {
         // Step 1: Update the post status
         PostReview post = reviewRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Post met ID " + postId + " niet gevonden."));
@@ -179,8 +179,6 @@ public class ReviewService {
             e.printStackTrace();
             throw new RuntimeException("Failed to send email");
         }
-
-
     }
 
     public void deleteAllReviews(){
