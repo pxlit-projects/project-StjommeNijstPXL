@@ -44,6 +44,112 @@ class PostControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(postController).build();
         objectMapper = new ObjectMapper();
     }
+    @Test
+    void testGetNotApprovedPosts() throws Exception {
+        // Given: a list of PostResponse objects for not approved posts
+        PostResponse post1 = PostResponse.builder()
+                .id(1L)
+                .author("Author 1")
+                .title("Not Approved Post 1")
+                .content("Content 1")
+                .createdAt("2023-12-01 12:00:00")
+                .status(Status.WACHTEND)
+                .build();
+
+        PostResponse post2 = PostResponse.builder()
+                .id(2L)
+                .author("Author 2")
+                .title("Not Approved Post 2")
+                .content("Content 2")
+                .createdAt("2023-12-02 12:00:00")
+                .status(Status.WACHTEND)
+                .build();
+
+        // Mock the service layer to return these not approved posts
+        when(postService.getNotApprovedPosts()).thenReturn(List.of(post1, post2));
+
+        // Perform the GET request to the /notapproved endpoint
+        mockMvc.perform(get("/api/posts/notapproved"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].title").value("Not Approved Post 1"))
+                .andExpect(jsonPath("$[1].title").value("Not Approved Post 2"));
+
+        // Verify the service method was called
+        verify(postService, times(1)).getNotApprovedPosts();
+    }
+
+    @Test
+    void testGetDeclinedPosts() throws Exception {
+        // Given: a list of PostResponseWithComment objects for declined posts
+        PostResponseWithComment post1 = PostResponseWithComment.builder()
+                .id(1L)
+                .author("Author 1")
+                .title("Declined Post 1")
+                .content("Content 1")
+                .createdAt("2023-12-01 12:00:00")
+                .status(Status.NIET_GOEDGEKEURD)
+                .comment("Declined reason 1")
+                .build();
+
+        PostResponseWithComment post2 = PostResponseWithComment.builder()
+                .id(2L)
+                .author("Author 2")
+                .title("Declined Post 2")
+                .content("Content 2")
+                .createdAt("2023-12-02 12:00:00")
+                .status(Status.NIET_GOEDGEKEURD)
+                .comment("Declined reason 2")
+                .build();
+
+        // Mock the service layer to return these declined posts
+        when(postService.getDeclinedPosts()).thenReturn(List.of(post1, post2));
+
+        // Perform the GET request to the /declined endpoint
+        mockMvc.perform(get("/api/posts/declined"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].title").value("Declined Post 1"))
+                .andExpect(jsonPath("$[0].comment").value("Declined reason 1"))
+                .andExpect(jsonPath("$[1].title").value("Declined Post 2"))
+                .andExpect(jsonPath("$[1].comment").value("Declined reason 2"));
+
+        // Verify the service method was called
+        verify(postService, times(1)).getDeclinedPosts();
+    }
+
+    @Test
+    void testGetConceptPosts() throws Exception {
+        // Given: a list of PostResponse objects for concept posts
+        PostResponse post1 = PostResponse.builder()
+                .id(1L)
+                .author("Author 1")
+                .title("Concept Post 1")
+                .content("Content 1")
+                .createdAt("2023-12-01 12:00:00")
+                .status(Status.CONCEPT)
+                .build();
+
+        PostResponse post2 = PostResponse.builder()
+                .id(2L)
+                .author("Author 2")
+                .title("Concept Post 2")
+                .content("Content 2")
+                .createdAt("2023-12-02 12:00:00")
+                .status(Status.CONCEPT)
+                .build();
+
+        // Mock the service layer to return these posts
+        when(postService.getConceptPosts()).thenReturn(List.of(post1, post2));
+
+        // Perform the GET request to the /concepts endpoint
+        mockMvc.perform(get("/api/posts/concepts"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].title").value("Concept Post 1"))
+                .andExpect(jsonPath("$[1].title").value("Concept Post 2"));
+
+        // Verify the service method was called
+        verify(postService, times(1)).getConceptPosts();
+    }
+
 
     @Test
     void testCreatePost() throws Exception {
