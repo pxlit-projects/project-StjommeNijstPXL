@@ -5,15 +5,15 @@ spring:
   cloud:
     gateway:
       globalcors:
-        corsConfiguration:
+        corsConfigurations:
           '[/**]':
             allowedOrigins:
-              - "localhost"
+              - "*"
             allowedMethods:
               - "*"
             allowedHeaders:
               - "*"
-            allowCredentials: true
+            allowCredentials: false
       discovery:
         locator:
           enabled: true
