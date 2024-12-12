@@ -15,8 +15,8 @@ import { UserCommentResponse } from '../models/user-comment-response.model';
 })
 export class PostService {
   
-  private apiUrl = 'http://localhost:8085/api/posts';
-  private apiUrlReview = 'http://localhost:8086/api/review';
+  private apiUrl = 'http://localhost:8083/api/posts';
+  private apiUrlReview = 'http://localhost:8083/api/review';
 
   constructor(private http: HttpClient = inject(HttpClient), private authservice: AuthService) {}
 

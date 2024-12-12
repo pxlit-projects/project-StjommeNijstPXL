@@ -1,0 +1,14 @@
+2024-12-09T12:01:09.921+0100 INFO               [main]                         be.pxl.services.CommentControllerTest - Starting CommentControllerTest using Java 23 with PID 34464 (started by stjom in C:\Vakken 3de jaar\Fullstack Java\project-StjommeNijstPXL\backend-java\Backend-StjommeNijst\comment-service)
+2024-12-09T12:01:09.924+0100 DEBUG              [main]                         be.pxl.services.CommentControllerTest - Running with Spring Boot v3.3.5, Spring v6.1.14
+2024-12-09T12:01:09.926+0100 INFO               [main]                         be.pxl.services.CommentControllerTest - No active profile set, falling back to 1 default profile: "default"
+2024-12-09T12:01:15.190+0100 INFO               [main]                         be.pxl.services.CommentControllerTest - Started CommentControllerTest in 7.951 seconds (process running for 31.905)
+2024-12-09T12:01:15.443+0100 INFO               [main]                         be.pxl.services.controller.CommentController - Request received to delete comment with ID: 1
+2024-12-09T12:01:15.455+0100 INFO               [main]                         be.pxl.services.controller.CommentController - Comment with ID: 1 deleted successfully
+2024-12-09T12:01:15.582+0100 INFO               [main]                         be.pxl.services.controller.CommentController - Request received to retrieve comments for post ID: 1
+2024-12-09T12:01:15.584+0100 DEBUG              [main]                         be.pxl.services.controller.CommentController - Retrieved 2 comments for post ID: 1
+2024-12-09T12:01:15.804+0100 INFO               [main]                         be.pxl.services.controller.CommentController - Request received to update comment with ID: 1
+2024-12-09T12:01:15.805+0100 DEBUG              [main]                         be.pxl.services.controller.CommentController - Update request details: UserCommentRequest(content=Updated content, author=Updated author, createdAt=2024-12-08 10:00:00, postId=1)
+2024-12-09T12:01:15.812+0100 INFO               [main]                         be.pxl.services.controller.CommentController - Comment with ID: 1 updated successfully
+2024-12-09T12:01:15.847+0100 INFO               [main]                         be.pxl.services.controller.CommentController - Request received to add a comment to post ID: 1
+2024-12-09T12:01:15.847+0100 DEBUG              [main]                         be.pxl.services.controller.CommentController - Comment request details: UserCommentRequest(content=Test content, author=Test author, createdAt=2024-12-08 10:00:00, postId=1)
+2024-12-09T12:01:15.848+0100 INFO               [main]                         be.pxl.services.controller.CommentController - Comment added successfully with ID: 1
