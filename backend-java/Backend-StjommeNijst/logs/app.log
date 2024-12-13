@@ -65,3 +65,7 @@
 2024-12-12T11:32:29.268+0100 DEBUG              [http-nio-8085-exec-9]         be.pxl.services.controller.PostController - Retrieved 12 filtered posts
 2024-12-12T11:32:38.672+0100 INFO               [http-nio-8086-exec-1]         be.pxl.services.controller.ReviewController - Request received to fetch all pending posts for review
 2024-12-12T11:32:38.890+0100 INFO               [http-nio-8086-exec-1]         be.pxl.services.controller.ReviewController - Fetched 22 pending posts
+2024-12-12T11:33:46.644+0100 INFO               [http-nio-8085-exec-5]         be.pxl.services.controller.PostController - Request received to filter posts with parameters: startDate=null, endDate=null, author=null, keyword=null
+2024-12-12T11:33:46.653+0100 DEBUG              [http-nio-8085-exec-5]         be.pxl.services.controller.PostController - Retrieved 12 filtered posts
+2024-12-12T11:33:49.568+0100 INFO               [http-nio-8085-exec-6]         be.pxl.services.controller.PostController - Request received to filter posts with parameters: startDate=null, endDate=null, author=null, keyword=null
+2024-12-12T11:33:49.575+0100 DEBUG              [http-nio-8085-exec-6]         be.pxl.services.controller.PostController - Retrieved 12 filtered posts
