@@ -215,7 +215,7 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.author").value("Author"));
 
-        verify(postService, times(2)).getPostById(1L);
+        verify(postService, times(1)).getPostById(1L);
     }
 
     @Test

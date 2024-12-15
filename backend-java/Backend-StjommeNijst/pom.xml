@@ -24,7 +24,6 @@
     <modules>
         <module>post-service</module>
         <module>discovery-service</module>
-        <module>discovery-service</module>
         <module>review-service</module>
         <module>comment-service</module>
         <module>config-service</module>
@@ -86,6 +85,21 @@
                         </exclude>
                     </excludes>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>jar</classifier> <!-- Voeg een classifier toe -->
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
