@@ -1,93 +1,14 @@
 version: '3.8'
 
 services:
-  # Config-service
-  configservice:
-    build:
-      context: ./config-service
-      dockerfile: Dockerfile
-    ports:
-      - "8088:8088"
-    networks:
-      - microservices-network
-
-  # Discovery-service
-  discoveryservice:
-    build:
-      context: ./discovery-service
-      dockerfile: Dockerfile
-    ports:
-      - "8061:8061"
-    depends_on:
-      - configservice  # Zorg ervoor dat config-service eerst is opgestart
-    networks:
-      - microservices-network
-
-  # Gateway-service
-  gatewayservice:
-    build:
-      context: ./gateway-service
-      dockerfile: Dockerfile
-    ports:
-      - "8083:8083"
-    depends_on:
-      - discoveryservice  # Zorg ervoor dat discoveryservice klaar is
-    networks:
-      - microservices-network
-
-  # Postservice
-  postservice:
-    build:
-      context: ./post-service
-      dockerfile: Dockerfile
-    ports:
-      - "8085:8085"
-    depends_on:
-      - postservice-db  # Afhankelijkheid van de database
-      - gatewayservice  # Zorg ervoor dat gatewayservice draait
-    networks:
-      - microservices-network
-
-  # Reviewservice
-  reviewservice:
-    build:
-      context: ./review-service
-      dockerfile: Dockerfile
-    ports:
-      - "8086:8086"
-    depends_on:
-      - reviewservice-db
-      - gatewayservice  # Zorg ervoor dat gatewayservice draait
-    networks:
-      - microservices-network
-
-  # Commentservice
-  commentservice:
-    build:
-      context: ./comment-service
-      dockerfile: Dockerfile
-    ports:
-      - "8087:8087"
-    depends_on:
-      - commentservice-db
-      - gatewayservice  # Zorg ervoor dat gatewayservice draait
-    networks:
-      - microservices-network
-
   # Database voor Postservice
   postservice-db:
     image: mysql:8.0
     container_name: postservice-db
     ports:
       - "3307:3306"
-    environment:
-      MYSQL_DATABASE: 'postservice_db'
-      MYSQL_USER: 'root'
-      MYSQL_ROOT_PASSWORD: 'toor'
     volumes:
       - db_data_postservice:/var/lib/mysql
-    networks:
-      - microservices-network
 
   # Database voor Reviewservice
   reviewservice-db:
@@ -95,14 +16,8 @@ services:
     container_name: reviewservice-db
     ports:
       - "3308:3306"
-    environment:
-      MYSQL_DATABASE: 'reviewservice_db'
-      MYSQL_USER: 'root'
-      MYSQL_ROOT_PASSWORD: 'toor'
     volumes:
       - db_data_reviewservice:/var/lib/mysql
-    networks:
-      - microservices-network
 
   # Database voor Commentservice
   commentservice-db:
@@ -110,14 +25,8 @@ services:
     container_name: commentservice-db
     ports:
       - "3309:3306"
-    environment:
-      MYSQL_DATABASE: 'commentservice_db'
-      MYSQL_USER: 'root'
-      MYSQL_ROOT_PASSWORD: 'toor'
     volumes:
       - db_data_commentservice:/var/lib/mysql
-    networks:
-      - microservices-network
 
   # RabbitMQ service
   rabbitmq:
@@ -126,13 +35,8 @@ services:
     ports:
       - "5672:5672"  # AMQP port voor messaging
       - "15672:15672"  # Management console port
-    environment:
-      RABBITMQ_DEFAULT_USER: 'guest'
-      RABBITMQ_DEFAULT_PASS: 'guest'
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
-    networks:
-      - microservices-network
 
 # Declaratie van volumes voor persistente opslag
 volumes:
@@ -140,8 +44,3 @@ volumes:
   db_data_reviewservice:
   db_data_commentservice:
   rabbitmq_data:
-
-# Declaratie van netwerken om de communicatie tussen de services te beheren
-networks:
-  microservices-network:
-    driver: bridge

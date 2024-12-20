@@ -21,7 +21,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public ResponseEntity<PostResponse> createPost(@RequestBody PostRequest postRequest, HttpServletRequest request) {
+    public ResponseEntity<PostResponse> createPost(@RequestBody PostRequest postRequest) {
         logger.info("Request received to create a post: {}", postRequest);
         PostResponse createdPost = postService.createPost(postRequest);
         logger.info("Post created with ID: {}", createdPost.getId());
