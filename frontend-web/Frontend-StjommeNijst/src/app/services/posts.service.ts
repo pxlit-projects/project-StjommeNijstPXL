@@ -8,6 +8,7 @@ import { Status } from '../models/post-status.enum';
 import { PostWithComment } from '../models/postWithComment.model';
 import { UserCommentRequest } from '../models/user-comment-request.model';
 import { UserCommentResponse } from '../models/user-comment-response.model';
+import { environment } from '../../environments/environment';
 import { HttpClientModule } from '@angular/common/http';
 
 
@@ -16,8 +17,9 @@ import { HttpClientModule } from '@angular/common/http';
 })
 export class PostService {
   
-  private apiUrl = 'http://localhost:8083/api/posts';
-  private apiUrlReview = 'http://localhost:8083/api/review';
+  private apiUrl = environment.apiUrls.posts;
+  private apiUrlReview = environment.apiUrls.review;
+  
 
   constructor(private http: HttpClient = inject(HttpClient), private authservice: AuthService) {}
 
