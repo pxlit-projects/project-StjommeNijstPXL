@@ -9,6 +9,7 @@ import { PostWithComment } from '../models/postWithComment.model';
 import { UserCommentRequest } from '../models/user-comment-request.model';
 import { UserCommentResponse } from '../models/user-comment-response.model';
 import { HttpClientModule } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 
 @Injectable({
@@ -16,8 +17,8 @@ import { HttpClientModule } from '@angular/common/http';
 })
 export class PostService {
   
-  private apiUrl = 'http://localhost:8083/api/posts';
-  private apiUrlReview = 'http://localhost:8083/api/review';
+  private apiUrl = environment.apiBaseUrl;
+  private apiUrlReview = environment.apiReviewBaseUrl;
 
   constructor(private http: HttpClient = inject(HttpClient), private authservice: AuthService) {}
 
