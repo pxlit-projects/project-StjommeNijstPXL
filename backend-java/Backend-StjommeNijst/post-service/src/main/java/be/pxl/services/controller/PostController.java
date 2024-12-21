@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -21,12 +22,19 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public ResponseEntity<PostResponse> createPost(@RequestBody PostRequest postRequest) {
+    public ResponseEntity<PostResponse> createPost(@RequestBody PostRequest postRequest, HttpServletRequest request) {
+        String userRole = request.getHeader("X-User-Role");
         logger.info("Request received to create a post: {}", postRequest);
-        PostResponse createdPost = postService.createPost(postRequest);
-        logger.info("Post created with ID: {}", createdPost.getId());
-        return ResponseEntity.ok(createdPost);
+        if (Objects.equals(userRole, "redacteur")) {
+            PostResponse createdPost = postService.createPost(postRequest);
+            logger.info("Post created with ID: {}", createdPost.getId());
+            return ResponseEntity.ok(createdPost);
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
+
 
     @GetMapping
     public ResponseEntity<List<PostResponse>> getAllPosts() {
@@ -49,40 +57,65 @@ public class PostController {
     }
 
     @GetMapping("/concepts")
-    public ResponseEntity<List<PostResponse>> getConceptPosts() {
-        logger.info("Request received to retrieve concept posts");
-        List<PostResponse> posts = postService.getConceptPosts();
-        logger.debug("Retrieved {} concept posts", posts.size());
-        return ResponseEntity.ok(posts);
+    public ResponseEntity<List<PostResponse>> getConceptPosts(HttpServletRequest request) {
+        String userRole = request.getHeader("X-User-Role");
+        if (Objects.equals(userRole, "redacteur")) {
+            logger.info("Request received to retrieve concept posts");
+            List<PostResponse> posts = postService.getConceptPosts();
+            logger.debug("Retrieved {} concept posts", posts.size());
+            return ResponseEntity.ok(posts);
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
     @GetMapping("/declined")
-    public ResponseEntity<List<PostResponseWithComment>> getDeclinedPosts() {
-        logger.info("Request received to retrieve declined posts");
-        List<PostResponseWithComment> posts = postService.getDeclinedPosts();
-        logger.debug("Retrieved {} declined posts", posts.size());
-        return ResponseEntity.ok(posts);
+    public ResponseEntity<List<PostResponseWithComment>> getDeclinedPosts(HttpServletRequest request) {
+        String userRole = request.getHeader("X-User-Role");
+        if(Objects.equals(userRole, "redacteur")) {
+            logger.info("Request received to retrieve declined posts");
+            List<PostResponseWithComment> posts = postService.getDeclinedPosts();
+            logger.debug("Retrieved {} declined posts", posts.size());
+            return ResponseEntity.ok(posts);
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
     @GetMapping("/notapproved")
-    public ResponseEntity<List<PostResponse>> getNotApprovedPosts() {
-        logger.info("Request received to retrieve not-approved posts");
-        List<PostResponse> posts = postService.getNotApprovedPosts();
-        logger.debug("Retrieved {} not-approved posts", posts.size());
-        return ResponseEntity.ok(posts);
+    public ResponseEntity<List<PostResponse>> getNotApprovedPosts(HttpServletRequest request) {
+        String userRole = request.getHeader("X-User-Role");
+        if(Objects.equals(userRole, "redacteur")) {
+            logger.info("Request received to retrieve not-approved posts");
+            List<PostResponse> posts = postService.getNotApprovedPosts();
+            logger.debug("Retrieved {} not-approved posts", posts.size());
+            return ResponseEntity.ok(posts);
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<PostResponse> updatePost(@PathVariable("id") Long id,
-                                                   @RequestBody PostRequest postRequest) {
+                                                   @RequestBody PostRequest postRequest, HttpServletRequest request) {
+
         logger.info("Request received to update post with ID: {}", id);
-        PostResponse updatedPost = postService.updatePost(id, postRequest);
-        if (updatedPost != null) {
-            logger.debug("Post updated: {}", updatedPost);
-            return ResponseEntity.ok(updatedPost);
-        } else {
-            logger.warn("Post with ID {} not found for update", id);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        String userRole = request.getHeader("X-User-Role");
+        if (Objects.equals(userRole, "redacteur")) {
+            PostResponse updatedPost = postService.updatePost(id, postRequest);
+            if (updatedPost != null) {
+                logger.debug("Post updated: {}", updatedPost);
+                return ResponseEntity.ok(updatedPost);
+            } else {
+                logger.warn("Post with ID {} not found for update", id);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 

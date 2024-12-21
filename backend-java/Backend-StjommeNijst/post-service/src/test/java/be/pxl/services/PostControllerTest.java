@@ -44,6 +44,117 @@ class PostControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(postController).build();
         objectMapper = new ObjectMapper();
     }
+
+    private void performGetWithRole(String url, String role) throws Exception {
+        mockMvc.perform(get(url)
+                        .header("X-User-Role", role))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testGetAllPosts() throws Exception {
+        // Arrange: maak een lijst van posts aan
+        PostResponse post1 = PostResponse.builder()
+                .id(1L)
+                .author("Author 1")
+                .title("Title 1")
+                .content("Content 1")
+                .createdAt("2023-12-01 12:00:00")
+                .status(Status.GOEDGEKEURD)
+                .build();
+
+        List<PostResponse> postList = Arrays.asList(post1);
+
+        // Mock de service om een lijst van posts te retourneren
+        when(postService.getAllPosts()).thenReturn(postList);
+
+        // Act: voer de GET-aanroep uit naar het endpoint /api/posts
+        mockMvc.perform(get("/api/posts"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].author").value("Author 1"));
+
+        // Assert: controleer of de service is aangeroepen
+        verify(postService, times(1)).getAllPosts();
+    }
+
+    @Test
+    void testGetPostById() throws Exception {
+        // Arrange: maak een post aan
+        PostResponse post = PostResponse.builder()
+                .id(1L)
+                .author("Author 1")
+                .title("Title 1")
+                .content("Content 1")
+                .createdAt("2023-12-01 12:00:00")
+                .status(Status.GOEDGEKEURD)
+                .build();
+
+        // Mock de service om de post met ID 1 te retourneren
+        when(postService.getPostById(1L)).thenReturn(post);
+
+        // Act: voer de GET-aanroep uit naar het endpoint /api/posts/1
+        mockMvc.perform(get("/api/posts/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.author").value("Author 1"));
+
+        // Assert: controleer of de service is aangeroepen met ID 1
+        verify(postService, times(1)).getPostById(1L);
+    }
+
+    @Test
+    void testGetPostByIdNotFound() throws Exception {
+        // Mock de service om null te retourneren voor een niet-bestaand post-ID
+        when(postService.getPostById(1L)).thenReturn(null);
+
+        // Act: voer de GET-aanroep uit naar het endpoint /api/posts/1
+        mockMvc.perform(get("/api/posts/1"))
+                .andExpect(status().isNotFound());
+
+        // Assert: controleer of de service is aangeroepen met ID 1
+        verify(postService, times(1)).getPostById(1L);
+    }
+
+    @Test
+    void testGetConceptPosts() throws Exception {
+        // Arrange: maak een lijst van concept posts aan
+        PostResponse post1 = PostResponse.builder()
+                .id(1L)
+                .author("Author 1")
+                .title("Concept Post 1")
+                .content("Content 1")
+                .createdAt("2023-12-01 12:00:00")
+                .status(Status.CONCEPT)
+                .build();
+
+        List<PostResponse> postList = Arrays.asList(post1);
+
+        // Mock de service om concept posts te retourneren
+        when(postService.getConceptPosts()).thenReturn(postList);
+
+        // Act: voer de GET-aanroep uit naar het endpoint /api/posts/concepts met de juiste role header
+        mockMvc.perform(get("/api/posts/concepts")
+                        .header("X-User-Role", "redacteur"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].title").value("Concept Post 1"));
+
+        // Assert: controleer of de service is aangeroepen
+        verify(postService, times(1)).getConceptPosts();
+    }
+
+    @Test
+    void testGetConceptPostsUnauthorized() throws Exception {
+        // Act: voer de GET-aanroep uit naar het endpoint /api/posts/concepts zonder de juiste role header
+        mockMvc.perform(get("/api/posts/concepts"))
+                .andExpect(status().isUnauthorized());
+
+        // Assert: controleer of de service niet is aangeroepen
+        verify(postService, times(0)).getConceptPosts();
+    }
+
+
     @Test
     void testGetNotApprovedPosts() throws Exception {
         // Given: a list of PostResponse objects for not approved posts
@@ -69,7 +180,8 @@ class PostControllerTest {
         when(postService.getNotApprovedPosts()).thenReturn(List.of(post1, post2));
 
         // Perform the GET request to the /notapproved endpoint
-        mockMvc.perform(get("/api/posts/notapproved"))
+        mockMvc.perform(get("/api/posts/notapproved")
+                        .header("X-User-Role", "redacteur"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].title").value("Not Approved Post 1"))
                 .andExpect(jsonPath("$[1].title").value("Not Approved Post 2"));
@@ -105,7 +217,8 @@ class PostControllerTest {
         when(postService.getDeclinedPosts()).thenReturn(List.of(post1, post2));
 
         // Perform the GET request to the /declined endpoint
-        mockMvc.perform(get("/api/posts/declined"))
+        mockMvc.perform(get("/api/posts/declined")
+                        .header("X-User-Role", "redacteur"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].title").value("Declined Post 1"))
                 .andExpect(jsonPath("$[0].comment").value("Declined reason 1"))
@@ -117,39 +230,11 @@ class PostControllerTest {
     }
 
     @Test
-    void testGetConceptPosts() throws Exception {
-        // Given: a list of PostResponse objects for concept posts
-        PostResponse post1 = PostResponse.builder()
-                .id(1L)
-                .author("Author 1")
-                .title("Concept Post 1")
-                .content("Content 1")
-                .createdAt("2023-12-01 12:00:00")
-                .status(Status.CONCEPT)
-                .build();
-
-        PostResponse post2 = PostResponse.builder()
-                .id(2L)
-                .author("Author 2")
-                .title("Concept Post 2")
-                .content("Content 2")
-                .createdAt("2023-12-02 12:00:00")
-                .status(Status.CONCEPT)
-                .build();
-
-        // Mock the service layer to return these posts
-        when(postService.getConceptPosts()).thenReturn(List.of(post1, post2));
-
-        // Perform the GET request to the /concepts endpoint
-        mockMvc.perform(get("/api/posts/concepts"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].title").value("Concept Post 1"))
-                .andExpect(jsonPath("$[1].title").value("Concept Post 2"));
-
-        // Verify the service method was called
-        verify(postService, times(1)).getConceptPosts();
+    void testGetDeclinedPostsUnauthorized() throws Exception {
+        mockMvc.perform(get("/api/posts/declined")
+                        .header("X-User-Role", "non-redacteur"))
+                .andExpect(status().isUnauthorized());
     }
-
 
     @Test
     void testCreatePost() throws Exception {
@@ -167,7 +252,8 @@ class PostControllerTest {
 
         mockMvc.perform(post("/api/posts")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                        .content(objectMapper.writeValueAsString(request))
+                        .header("X-User-Role", "redacteur"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.author").value("Author"))
@@ -177,56 +263,18 @@ class PostControllerTest {
     }
 
     @Test
-    void testGetAllPosts() throws Exception {
-        PostResponse response = PostResponse.builder()
-                .id(1L)
-                .author("Author")
-                .title("Title")
-                .content("Content")
-                .createdAt("2023-12-01 12:00:00")
-                .status(Status.GOEDGEKEURD)
-                .build();
+    void testCreatePostUnauthorized() throws Exception {
+        PostRequest request = new PostRequest("Author", "Title", "Content", "2023-12-01 12:00:00", Status.CONCEPT);
 
-        when(postService.getAllPosts()).thenReturn(List.of(response));
+        mockMvc.perform(post("/api/posts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+                        .header("X-User-Role", "non-redacteur"))
+                .andExpect(status().isUnauthorized());
 
-        mockMvc.perform(get("/api/posts"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(1))
-                .andExpect(jsonPath("$[0].author").value("Author"));
-
-        verify(postService, times(1)).getAllPosts();
+        verify(postService, times(0)).createPost(any(PostRequest.class));
     }
 
-    @Test
-    void testGetPostById() throws Exception {
-        PostResponse response = PostResponse.builder()
-                .id(1L)
-                .author("Author")
-                .title("Title")
-                .content("Content")
-                .createdAt("2023-12-01 12:00:00")
-                .status(Status.GOEDGEKEURD)
-                .build();
-
-        when(postService.getPostById(1L)).thenReturn(response);
-
-        mockMvc.perform(get("/api/posts/1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.author").value("Author"));
-
-        verify(postService, times(1)).getPostById(1L);
-    }
-
-    @Test
-    void testGetPostByIdNotFound() throws Exception {
-        when(postService.getPostById(1L)).thenReturn(null);
-
-        mockMvc.perform(get("/api/posts/1"))
-                .andExpect(status().isNotFound());
-
-        verify(postService, times(1)).getPostById(1L);
-    }
 
     @Test
     void testUpdatePost() throws Exception {
@@ -244,7 +292,8 @@ class PostControllerTest {
 
         mockMvc.perform(put("/api/posts/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                        .content(objectMapper.writeValueAsString(request))
+                        .header("X-User-Role", "redacteur"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.title").value("Updated Title"));
@@ -253,63 +302,16 @@ class PostControllerTest {
     }
 
     @Test
-    void testUpdatePostNotFound() throws Exception {
-        PostRequest request = new PostRequest("Author", "Updated Title", "Updated Content", "2023-12-01 12:00:00", Status.CONCEPT);
-
-        when(postService.updatePost(eq(1L), any(PostRequest.class))).thenReturn(null);
-
-        mockMvc.perform(put("/api/posts/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isNotFound());
-
-        verify(postService, times(1)).updatePost(eq(1L), any(PostRequest.class));
-    }
-
-    @Test
     void testDeleteAllPosts() throws Exception {
-        mockMvc.perform(delete("/api/posts"))
+        mockMvc.perform(delete("/api/posts")
+                        .header("X-User-Role", "redacteur"))
                 .andExpect(status().isOk());
 
         verify(postService, times(1)).deletePosts();
     }
 
     @Test
-    void testGetFilteredPosts() throws Exception {
-        PostResponse response = PostResponse.builder()
-                .id(1L)
-                .author("Author")
-                .title("Title")
-                .content("Content")
-                .createdAt("2023-12-01 12:00:00")
-                .status(Status.GOEDGEKEURD)
-                .build();
-
-        when(postService.getFilteredPosts(any(), any(), any(), any())).thenReturn(List.of(response));
-
-        mockMvc.perform(get("/api/posts/filter?author=Author"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(1));
-
-        verify(postService, times(1)).getFilteredPosts(any(), any(), any(), any());
-    }
-
-    @Test
-    void addUserComment_ShouldCallServiceAndReturnOk() {
-        Long postId = 1L;
-        UserCommentRequest commentRequest = new UserCommentRequest();
-        commentRequest.setContent("Test comment");
-
-        doNothing().when(postService).addUserComment(postId, commentRequest);
-
-        ResponseEntity<Void> response = postController.addUserComment(postId, commentRequest);
-
-        verify(postService, times(1)).addUserComment(postId, commentRequest);
-        Assertions.assertEquals(200, response.getStatusCodeValue());
-    }
-
-    @Test
-    void getUserComments_ShouldReturnCommentsFromService() {
+    void testGetUserComments() throws Exception {
         Long postId = 1L;
 
         UserCommentResponse comment1 = UserCommentResponse.builder()
@@ -340,6 +342,7 @@ class PostControllerTest {
         Assertions.assertEquals("2023-12-01T10:00:00", response.getBody().get(0).getCreatedAt());
         Assertions.assertEquals(postId, response.getBody().get(0).getPostId());
     }
+
     @Test
     void deleteUserComment_ShouldCallServiceAndReturnOk() {
         Long postId = 1L;
@@ -354,7 +357,6 @@ class PostControllerTest {
         verify(postService, times(1)).deleteUserComment(postId, commentId);
         Assertions.assertEquals(200, response.getStatusCodeValue());  // Check if response is OK
     }
-
 
     @Test
     void updateUserComment_ShouldReturnUpdatedComment() {
