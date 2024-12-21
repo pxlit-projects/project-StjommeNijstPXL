@@ -26,3 +26,45 @@
 2024-12-20T14:10:25.983+0100 INFO               [http-nio-8086-exec-1]         be.pxl.services.controller.ReviewController - Request received to fetch all pending posts for review
 2024-12-20T14:10:26.405+0100 INFO               [http-nio-8086-exec-1]         be.pxl.services.controller.ReviewController - Fetched 23 pending posts
 2024-12-20T14:10:32.841+0100 INFO               [http-nio-8086-exec-2]         be.pxl.services.controller.ReviewController - Request received to approve post with ID: 87
+2024-12-21T13:57:29.803+0100 INFO               [main]                         be.pxl.services.PostServiceApplication - Starting PostServiceApplication using Java 23 with PID 7624 (C:\Vakken 3de jaar\Fullstack Java\project-StjommeNijstPXL\backend-java\Backend-StjommeNijst\post-service\target\classes started by stjom in C:\Vakken 3de jaar\Fullstack Java\project-StjommeNijstPXL\backend-java\Backend-StjommeNijst)
+2024-12-21T13:57:29.808+0100 DEBUG              [main]                         be.pxl.services.PostServiceApplication - Running with Spring Boot v3.3.5, Spring v6.1.14
+2024-12-21T13:57:29.809+0100 INFO               [main]                         be.pxl.services.PostServiceApplication - No active profile set, falling back to 1 default profile: "default"
+2024-12-21T13:57:43.727+0100 INFO               [main]                         be.pxl.services.PostServiceApplication - Started PostServiceApplication in 16.951 seconds (process running for 22.455)
+2024-12-21T14:05:12.917+0100 INFO               [main]                         be.pxl.services.CommentServiceApplication - Starting CommentServiceApplication using Java 23 with PID 32576 (C:\Vakken 3de jaar\Fullstack Java\project-StjommeNijstPXL\backend-java\Backend-StjommeNijst\comment-service\target\classes started by stjom in C:\Vakken 3de jaar\Fullstack Java\project-StjommeNijstPXL\backend-java\Backend-StjommeNijst)
+2024-12-21T14:05:12.919+0100 DEBUG              [main]                         be.pxl.services.CommentServiceApplication - Running with Spring Boot v3.3.5, Spring v6.1.14
+2024-12-21T14:05:12.921+0100 INFO               [main]                         be.pxl.services.CommentServiceApplication - No active profile set, falling back to 1 default profile: "default"
+2024-12-21T14:05:23.134+0100 INFO               [main]                         be.pxl.services.CommentServiceApplication - Started CommentServiceApplication in 12.808 seconds (process running for 14.741)
+2024-12-21T14:05:34.135+0100 INFO               [main]                         be.pxl.services.ReviewServiceApplication - Starting ReviewServiceApplication using Java 23 with PID 3732 (C:\Vakken 3de jaar\Fullstack Java\project-StjommeNijstPXL\backend-java\Backend-StjommeNijst\review-service\target\classes started by stjom in C:\Vakken 3de jaar\Fullstack Java\project-StjommeNijstPXL\backend-java\Backend-StjommeNijst)
+2024-12-21T14:05:34.138+0100 DEBUG              [main]                         be.pxl.services.ReviewServiceApplication - Running with Spring Boot v3.3.5, Spring v6.1.14
+2024-12-21T14:05:34.140+0100 INFO               [main]                         be.pxl.services.ReviewServiceApplication - No active profile set, falling back to 1 default profile: "default"
+2024-12-21T14:05:49.098+0100 INFO               [main]                         be.pxl.services.ReviewServiceApplication - Started ReviewServiceApplication in 17.224 seconds (process running for 19.444)
+2024-12-21T14:06:28.327+0100 INFO               [http-nio-8085-exec-1]         be.pxl.services.controller.PostController - Request received to filter posts with parameters: startDate=null, endDate=null, author=null, keyword=null
+2024-12-21T14:06:28.625+0100 DEBUG              [http-nio-8085-exec-1]         be.pxl.services.controller.PostController - Retrieved 13 filtered posts
+2024-12-21T14:06:28.971+0100 INFO               [http-nio-8085-exec-2]         be.pxl.services.controller.PostController - Request received to filter posts with parameters: startDate=null, endDate=null, author=null, keyword=null
+2024-12-21T14:06:28.986+0100 DEBUG              [http-nio-8085-exec-2]         be.pxl.services.controller.PostController - Retrieved 13 filtered posts
+2024-12-21T14:06:33.409+0100 INFO               [http-nio-8085-exec-3]         be.pxl.services.controller.PostController - Request received to filter posts with parameters: startDate=null, endDate=null, author=null, keyword=passes
+2024-12-21T14:06:33.423+0100 DEBUG              [http-nio-8085-exec-3]         be.pxl.services.controller.PostController - Retrieved 1 filtered posts
+2024-12-21T14:06:39.691+0100 INFO               [http-nio-8085-exec-4]         be.pxl.services.controller.PostController - Request received to filter posts with parameters: startDate=null, endDate=null, author=null, keyword=null
+2024-12-21T14:06:39.708+0100 DEBUG              [http-nio-8085-exec-4]         be.pxl.services.controller.PostController - Retrieved 13 filtered posts
+2024-12-21T14:06:41.543+0100 INFO               [http-nio-8086-exec-2]         be.pxl.services.controller.ReviewController - Request received to fetch all pending posts for review
+2024-12-21T14:06:41.851+0100 INFO               [http-nio-8086-exec-2]         be.pxl.services.controller.ReviewController - Fetched 22 pending posts
+2024-12-21T14:06:47.141+0100 INFO               [http-nio-8085-exec-5]         be.pxl.services.controller.PostController - Request received to filter posts with parameters: startDate=null, endDate=null, author=null, keyword=null
+2024-12-21T14:06:47.159+0100 DEBUG              [http-nio-8085-exec-5]         be.pxl.services.controller.PostController - Retrieved 13 filtered posts
+2024-12-21T14:06:50.363+0100 INFO               [http-nio-8085-exec-6]         be.pxl.services.controller.PostController - Request received to retrieve concept posts
+2024-12-21T14:06:50.385+0100 DEBUG              [http-nio-8085-exec-6]         be.pxl.services.controller.PostController - Retrieved 17 concept posts
+2024-12-21T14:13:55.200+0100 INFO               [http-nio-8085-exec-8]         be.pxl.services.controller.PostController - Request received to filter posts with parameters: startDate=null, endDate=null, author=null, keyword=null
+2024-12-21T14:13:55.321+0100 DEBUG              [http-nio-8085-exec-8]         be.pxl.services.controller.PostController - Retrieved 13 filtered posts
+2024-12-21T14:13:57.739+0100 INFO               [http-nio-8085-exec-10]        be.pxl.services.controller.PostController - Request received to retrieve comments for post with ID: 4
+2024-12-21T14:13:57.967+0100 INFO               [http-nio-8087-exec-1]         be.pxl.services.controller.CommentController - Request received to retrieve comments for post ID: 4
+2024-12-21T14:13:58.341+0100 DEBUG              [http-nio-8087-exec-1]         be.pxl.services.controller.CommentController - Retrieved 1 comments for post ID: 4
+2024-12-21T14:13:58.381+0100 DEBUG              [http-nio-8085-exec-10]        be.pxl.services.controller.PostController - Retrieved 1 comments for post ID: 4
+2024-12-21T14:14:06.383+0100 INFO               [http-nio-8085-exec-9]         be.pxl.services.controller.PostController - Request received to retrieve declined posts
+2024-12-21T14:14:06.399+0100 DEBUG              [http-nio-8085-exec-9]         be.pxl.services.controller.PostController - Retrieved 12 declined posts
+2024-12-21T14:14:10.998+0100 INFO               [http-nio-8085-exec-1]         be.pxl.services.controller.PostController - Request received to retrieve post with ID: 24
+2024-12-21T14:14:11.084+0100 DEBUG              [http-nio-8085-exec-1]         be.pxl.services.controller.PostController - Post retrieved: PostResponse(id=24, title=yyyy yyy, content=yyyy yyyy yyyy yyyy yyyy, author=ddd, createdAt=2024-11-23 18:44:11, status=NIET_GOEDGEKEURD, commentId=[])
+2024-12-21T14:14:18.349+0100 INFO               [http-nio-8085-exec-2]         be.pxl.services.controller.PostController - Request received to update post with ID: 24
+2024-12-21T14:14:18.560+0100 DEBUG              [http-nio-8085-exec-2]         be.pxl.services.controller.PostController - Post updated: PostResponse(id=24, title=yyyy yyy edit, content=yyyy yyyy yyyy yyyy yyyy, author=ddd, createdAt=2024-12-21 14:14:10, status=WACHTEND, commentId=[])
+2024-12-21T14:14:20.200+0100 INFO               [http-nio-8085-exec-3]         be.pxl.services.controller.PostController - Request received to filter posts with parameters: startDate=null, endDate=null, author=null, keyword=null
+2024-12-21T14:14:20.216+0100 DEBUG              [http-nio-8085-exec-3]         be.pxl.services.controller.PostController - Retrieved 13 filtered posts
+2024-12-21T14:14:24.243+0100 INFO               [http-nio-8086-exec-1]         be.pxl.services.controller.ReviewController - Request received to fetch all pending posts for review
+2024-12-21T14:14:24.260+0100 INFO               [http-nio-8086-exec-1]         be.pxl.services.controller.ReviewController - Fetched 23 pending posts

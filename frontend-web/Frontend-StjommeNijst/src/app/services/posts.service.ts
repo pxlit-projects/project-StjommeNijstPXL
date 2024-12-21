@@ -1,4 +1,3 @@
-// src/app/services/post.service.ts
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -8,9 +7,7 @@ import { Status } from '../models/post-status.enum';
 import { PostWithComment } from '../models/postWithComment.model';
 import { UserCommentRequest } from '../models/user-comment-request.model';
 import { UserCommentResponse } from '../models/user-comment-response.model';
-import { HttpClientModule } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-
 
 @Injectable({
   providedIn: 'root',
@@ -22,67 +19,89 @@ export class PostService {
 
   constructor(private http: HttpClient = inject(HttpClient), private authservice: AuthService) {}
 
+  private getHeaders() {
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'X-User-Role': this.authservice.getUserRole(),
+    });
+  }
+
   updateComment(commentId: number, comment: UserCommentRequest): Observable<UserCommentResponse> {
-    return this.http.put<UserCommentResponse>(`${this.apiUrl}/comments/${commentId}`, comment);
+    return this.http.put<UserCommentResponse>(`${this.apiUrl}/comments/${commentId}`, comment, {
+      headers: this.getHeaders()
+    });
   }
 
   deleteComment(postId: number, commentId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${postId}/comments/${commentId}`);
+    return this.http.delete<void>(`${this.apiUrl}/${postId}/comments/${commentId}`, {
+      headers: this.getHeaders()
+    });
   }
 
   addCommentToPost(postId: number, comment: UserCommentRequest): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/${postId}/comments`, comment);
+    return this.http.post<void>(`${this.apiUrl}/${postId}/comments`, comment, {
+      headers: this.getHeaders()
+    });
   }
 
   getCommentsByPost(postId: number): Observable<UserCommentResponse[]> {
-    return this.http.get<UserCommentResponse[]>(`${this.apiUrl}/${postId}/comments`);
+    return this.http.get<UserCommentResponse[]>(`${this.apiUrl}/${postId}/comments`, {
+      headers: this.getHeaders()
+    });
   }
 
   getNotApprovedPosts(): Observable<Post[]> {
-    return this.http.get<Post[]>(`${this.apiUrlReview}/pending`);
+    return this.http.get<Post[]>(`${this.apiUrlReview}/pending`, {
+      headers: this.getHeaders()
+    });
   }
 
   getDeclinedPosts(): Observable<PostWithComment[]>{
-    return this.http.get<PostWithComment[]>(`${this.apiUrl}/declined`);
+    return this.http.get<PostWithComment[]>(`${this.apiUrl}/declined`, {
+      headers: this.getHeaders()
+    });
   }
 
   approvePost(postId: number): Observable<string> {
-    return this.http.post<string>(`${this.apiUrlReview}/${postId}/approve`, null);
+    return this.http.post<string>(`${this.apiUrlReview}/${postId}/approve`, null, {
+      headers: this.getHeaders()
+    });
   }
 
   rejectPostWithComment(postId: number, comment: string): Observable<string> {
-    return this.http.post<string>(`${this.apiUrlReview}/${postId}/reject`, { comment });
-}
-
+    return this.http.post<string>(`${this.apiUrlReview}/${postId}/reject`, { comment }, {
+      headers: this.getHeaders()
+    });
+  }
 
   getAllPosts(): Observable<Post[]> {
-    return this.http.get<Post[]>(this.apiUrl);
+    return this.http.get<Post[]>(this.apiUrl, {
+      headers: this.getHeaders()
+    });
   }
 
   getPostById(id: number) {
-    return this.http.get<Post>(`${this.apiUrl}/${id}`);
+    return this.http.get<Post>(`${this.apiUrl}/${id}`, {
+      headers: this.getHeaders()
+    });
   }
   
   updatePost(id: number, post: Post) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'X-User-Role': this.authservice.getUserRole(),
+    return this.http.put<Post>(`${this.apiUrl}/${id}`, post, {
+      headers: this.getHeaders()
     });
-  
-    return this.http.put<Post>(`${this.apiUrl}/${id}`, post, { headers });
   }
 
   getSavedConcepts(): Observable<Post[]> {
-    return this.http.get<Post[]>(`${this.apiUrl}/concepts`);
+    return this.http.get<Post[]>(`${this.apiUrl}/concepts`, {
+      headers: this.getHeaders()
+    });
   }
 
   createPost(post: any) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'X-User-Role': this.authservice.getUserRole(),
+    return this.http.post(this.apiUrl, post, {
+      headers: this.getHeaders()
     });
-
-    return this.http.post(this.apiUrl, post, { headers });
   }
 
   getFilteredPosts(filter: any): Observable<Post[]> {
@@ -103,7 +122,10 @@ export class PostService {
 
     params = params.set('status', Status.GOEDGEKEURD)
 
-    return this.http.get<Post[]>(`${this.apiUrl}/filter`, { params });
+    return this.http.get<Post[]>(`${this.apiUrl}/filter`, {
+      headers: this.getHeaders(),
+      params
+    });
   }
 
   private formatDate(date: string): string {
@@ -118,4 +140,3 @@ export class PostService {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
 }
-
