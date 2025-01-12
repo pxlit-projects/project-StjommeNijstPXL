@@ -25,6 +25,9 @@
         <button (click)="toggleComments(post.id)" class="comment-toggle-button">
           {{ post.showComments ? 'Verberg reacties' : 'Zie reacties' }}
         </button>
+        @if(isRedacteur == true){
+          <button routerLink="/edit-post/{{ post.id }}" class="create-post-button">Edit</button>
+        }
         @if(post.showComments){
         <div class="comments-section">
           <ul>
